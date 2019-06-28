@@ -16,6 +16,7 @@ const routes = [
     path: '/',
     component: () => import(/* webpackChunkName: "main" */ './views/Main.vue'),
     props: { baseUrl: null },
+    beforeEnter: requireAuth,
     children: [
       {
         path: 'users',
@@ -35,6 +36,13 @@ const routes = [
         path: 'databases',
         component: () => import(/* webpackChunkName: "databases" */ './views/Databases.vue'),
         name: 'Databases',
+        beforeEnter: requireAuth,
+        props: { baseUrl: null }
+      },
+      {
+        path: 'requests',
+        component: () => import(/* webpackChunkName: "requests" */ './views/Requests.vue'),
+        name: 'Requests',
         beforeEnter: requireAuth,
         props: { baseUrl: null }
       }

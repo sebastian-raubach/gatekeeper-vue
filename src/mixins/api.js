@@ -13,6 +13,13 @@ export default {
     apiGetStatCounts: function (onSuccess, onError) {
       return this.authAjax({ url: this.getBaseUrl() + 'stat/count', method: 'GET', success: onSuccess, error: onError })
     },
+    // REQUESTS
+    apiGetNewRequests: function (onSuccess, onError) {
+      return this.authAjax({ url: this.getBaseUrl() + 'request/new', method: 'GET', success: onSuccess, error: onError })
+    },
+    apiGetExistingRequests: function (onSuccess, onError) {
+      return this.authAjax({ url: this.getBaseUrl() + 'request/existing', method: 'GET', success: onSuccess, error: onError })
+    },
     // USERS
     apiGetUsers: function (queryData, onSuccess, onError) {
       queryData.page -= 1
@@ -32,6 +39,9 @@ export default {
     },
     apiPatchUserGatekeeperAccess: function (userId, gatekeeperAccess, onSuccess, onError) {
       return this.authAjax({ url: this.getBaseUrl() + 'user/' + userId + '/gatekeeper', method: 'PATCH', data: gatekeeperAccess, success: onSuccess, error: onError })
+    },
+    apiPostPasswordReset: function (resetRequest, onSuccess, onError) {
+      return this.unauthAjax({ url: this.getBaseUrl() + 'passwordreset', method: 'POST', data: resetRequest, success: onSuccess, error: onError })
     },
     // DATABASES
     apiGetDatabases: function (queryData, onSuccess, onError) {

@@ -1,13 +1,13 @@
 <template>
   <b-container fluid>
-    <h1>Settings</h1>
+    <h1>{{ $t('pageSettingsHeading') }}</h1>
     <b-row>
       <b-col xs=12 md=6>
         <b-card header-tag="header" class="mb-3">
-          <h6 slot="header" class="mb-0">Update email address</h6>
+          <h6 slot="header" class="mb-0">{{ $t('pageSettingsHeadingUpdateEmail') }}</h6>
           <b-form @submit.prevent="onEmailChanged()">
             <b-form-group>
-              <label for="email">Email address</label>
+              <label for="email">{{ $t('formLabelEmail') }}</label>
               <b-input-group>
                 <b-input-group-prepend is-text>
                   <AtIcon class="form-icon" />
@@ -15,17 +15,17 @@
                 <b-form-input name="email" id="email" type="email" v-model="email" required />
               </b-input-group>
             </b-form-group>
-            <b-button variant="primary" type="submit" class="float-right" slot="footer">Update</b-button>
+            <b-button variant="primary" type="submit" class="float-right" slot="footer">{{ $t('actionUpdate') }}</b-button>
           </b-form>
         </b-card>
       </b-col>
       <b-col xs=12 md=6>
         <b-card header-tag="header" class="mb-3">
-          <h6 slot="header" class="mb-0">Update password</h6>
+          <h6 slot="header" class="mb-0">{{ $t('pageSettingsHeadingUpdatePassword') }}</h6>
 
           <b-form @submit.prevent="onPasswordChanged()">
             <b-form-group>
-              <label for="old-password">Old password</label>
+              <label for="old-password">{{ $t('formLabelCurrentPassword') }}</label>
               <b-input-group>
                 <b-input-group-prepend is-text>
                   <KeyRemoveIcon class="form-icon" />
@@ -35,7 +35,7 @@
             </b-form-group>
 
             <b-form-group>
-              <label for="new-password">New password</label>
+              <label for="new-password">{{ $t('formLabelNewPassword') }}</label>
               <b-input-group>
                 <b-input-group-prepend is-text class="no-border-radius-bottom">
                   <KeyPlusIcon class="form-icon" />
@@ -49,7 +49,7 @@
             </b-form-group>
 
             <b-form-group>
-              <label for="new-password-confirm">Confirm new password</label>
+              <label for="new-password-confirm">{{ $t('formLabelNewPasswordConfirm') }}</label>
               <b-input-group>
                 <b-input-group-prepend is-text>
                   <KeyPlusIcon class="form-icon" />
@@ -57,7 +57,7 @@
                 <b-form-input id="new-password-confirm" name="new-password-confirm" type="password" v-model="passwordConfirm" @keyup="checkPasswordsSame()" required />
               </b-input-group>
             </b-form-group>
-            <b-button :disabled="!canContinue" type="submit" variant="primary" class="float-right" slot="footer">Update</b-button>
+            <b-button :disabled="!canContinue" type="submit" variant="primary" class="float-right" slot="footer">{{ $t('actionUpdate') }}</b-button>
           </b-form>
         </b-card>
       </b-col>

@@ -1,68 +1,51 @@
 <template>
   <b-col>
-    <h1>Users</h1>
-    <v-server-table :url="baseUrl + 'user'"
-                    :columns="userColumns"
-                    :options="userOptions"
-                    ref="userTable"
-                    v-on:row-click="onRowClicked($event)"
-                    class="user-table">
-    </v-server-table>
+    <h1>{{ $t('pageUsersHeading') }}</h1>
+    <UserTable ref="userTable"
+               :baseUrl="baseUrl"
+               v-on:user-selected="(user) => onUserSelected(user)" />
     <template v-if="user">
       <b-row>
         <b-col xs=12 md=6>
           <b-card header-tag="header" class="mb-3">
-            <h6 slot="header" class="mb-0">User details</h6>
+            <h6 slot="header" class="mb-0">{{ $t('pageUsersHeadingDetails') }}</h6>
             <dl>
-              <dt>Username</dt><dd>{{ user.username }}</dd>
-              <dt>Full name</dt><dd>{{ user.fullName }}</dd>
-              <dt>Email</dt><dd>{{ user.emailAddress }}</dd>
-              <dt>Institution</dt><dd>{{ user.name + ' (' + user.acronym + ') ' + user.address}}</dd>
+              <dt>{{ $t('tableColumnUsername') }}</dt><dd>{{ user.username }}</dd>
+              <dt>{{ $t('tableColumnFullName') }}</dt><dd>{{ user.fullName }}</dd>
+              <dt>{{ $t('tableColumnEmail') }}</dt><dd>{{ user.emailAddress }}</dd>
+              <dt>{{ $t('tableColumnInstitute') }}</dt><dd>{{ user.name + ' (' + user.acronym + ') ' + user.address}}</dd>
             </dl>
           </b-card>
         </b-col>
         <b-col xs=12 md=6>
           <b-card header-tag="header" class="mb-3">
-            <h6 slot="header" class="mb-0">Actions</h6>
-            <h5>Access to Gatekeeper</h5>
+            <h6 slot="header" class="mb-0">{{ $t('pageUsersHeadingActions') }}</h6>
+            <h5>{{ $t('pageUsersHeadingGatekeeperAccess') }}</h5>
             <b-form-checkbox
               value="1"
               unchecked-value="0"
               v-model="user.gatekeeperAccess"
               @change="onGatekeeperAccessChanged($event)">
-              Should this user be allowed to change their email address and password?
+              {{ $t('pageUsersTextGatekeeperAccess') }}
             </b-form-checkbox>
-            <h5 class="mt-3">Delete user</h5>
-            <p>Click on the button below to delete this user account.</p>
-            <b-button variant="danger" @click="onDeleteUserClicked()">Delete</b-button>
+            <h5 class="mt-3">{{ $t('pageUsersHeadingDeleteUser') }}</h5>
+            <p>{{ $t('pageUsersTextDeleteUser') }}</p>
+            <b-button variant="danger" @click="onDeleteUserClicked()">{{ $t('actionDelete') }}</b-button>
           </b-card>
         </b-col>
         <b-col xs=12 md=6>
           <b-card header-tag="header" class="mb-3">
-            <h6 slot="header" class="mb-0">Permissions</h6>
-            <v-server-table :url="'' + user.id"
-                            ref="permissionsTable"
-                            :columns=permissionColumns
-                            :options=permissionOptions>
-              <b-button variant="danger"
-                        slot="delete"
-                        slot-scope="props"
-                        @click="deleteUserPermission(props.row, $event)">
-                <DeleteIcon class="form-icon" />
-              </b-button>
-              <b-form-select slot="userType"
-                            slot-scope="props"
-                            :value="props.row.userType"
-                            :options="userTypeOptions"
-                            @change="setUserType(props.row, $event)" />
-            </v-server-table>
+            <h6 slot="header" class="mb-0">{{ $t('pageUsersHeadingPermissions') }}</h6>
+            <UserPermissionTable :baseUrl="baseUrl"
+                                 :user="user"
+                                 ref="permissionsTable" />
           </b-card>
         </b-col>
         <b-col xs=12 md=6>
           <b-card header-tag="header" class="mb-3">
-            <h6 slot="header" class="mb-0">Grant permission</h6>
+            <h6 slot="header" class="mb-0">{{ $t('pageUsersHeadingGrantPermission') }}</h6>
             <b-tabs content-class="mt-3">
-              <b-tab title="Existing" active>
+              <b-tab :title="$t('pageUsersTabExisting')" active>
                 <b-form @submit.prevent="onSubmitExistingPermission">
                   <b-input-group class="mt-3">
                     <b-input-group-prepend is-text>
@@ -81,17 +64,17 @@
                                    :options="userTypeOptions"
                                    required />
                   </b-input-group>
-                  <b-button type="submit" variant="primary" class="mt-3">Add</b-button>
+                  <b-button type="submit" variant="primary" class="mt-3">{{ $t('actionAdd') }}</b-button>
                 </b-form>
               </b-tab>
-              <b-tab title="New">
+              <b-tab :title="$t('pageUsersTabNew')">
                 <b-form @submit.prevent="onSubmitNewPermission">
                   <b-input-group class="mt-3">
                     <b-input-group-prepend is-text>
                       <DatabaseIcon class="form-icon" />
                     </b-input-group-prepend>
                     <b-form-input  v-model="newPermission.database"
-                                   placeholder="Database"
+                                   :placeholder="$t('formLabelDatabase')"
                                    required />
                   </b-input-group>
                   <b-input-group class="mt-3">
@@ -99,7 +82,7 @@
                       <ServerIcon class="form-icon" />
                     </b-input-group-prepend>
                     <b-form-input  v-model="newPermission.server"
-                                   placeholder="Server"
+                                   :placeholder="$t('formLabelServer')"
                                    required />
                   </b-input-group>
                   <b-input-group class="mt-3">
@@ -107,7 +90,7 @@
                       <PencilIcon class="form-icon" />
                     </b-input-group-prepend>
                     <b-form-input  v-model="newPermission.description"
-                                   placeholder="Description"
+                                   :placeholder="$t('formLabelDescription')"
                                    required />
                   </b-input-group>
                   <b-input-group class="mt-3">
@@ -118,7 +101,7 @@
                                    :options="userTypeOptions"
                                    required />
                   </b-input-group>
-                  <b-button type="submit" variant="primary" class="mt-3">Add</b-button>
+                  <b-button type="submit" variant="primary" class="mt-3">{{ $t('actionAdd') }}</b-button>
                 </b-form>
               </b-tab>
             </b-tabs>
@@ -132,81 +115,40 @@
 <script>
 import AccountStarIcon from 'vue-material-design-icons/AccountStar.vue'
 import DatabaseIcon from 'vue-material-design-icons/Database.vue'
-import DeleteIcon from 'vue-material-design-icons/Delete.vue'
 import PencilIcon from 'vue-material-design-icons/Pencil.vue'
 import ServerIcon from 'vue-material-design-icons/Server.vue'
+
+import UserTable from '../components/UserTable'
+import UserPermissionTable from '../components/UserPermissionTable'
 
 import { EventBus } from '../event-bus.js'
 
 export default {
   data: function () {
     return {
-      userColumns: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address'],
-      userOptions: {
-        requestFunction: function (data) {
-          var vm = this
-          return this.apiGetUsers(data, function (result) {
-            vm.dispatch('success', result)
-          })
-        },
-        responseAdapter: function (data) {
-          return data
-        },
-        perPage: 10,
-        headings: {
-          username: 'Username',
-          fullName: 'Full name',
-          emailAddress: 'Email',
-          name: 'Institute name',
-          acronym: 'Institute acronym',
-          address: 'Institute address'
-        },
-        sortable: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address'],
-        filterable: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address']
-      },
-      permissionColumns: ['systemName', 'serverName', 'userType', 'delete'],
-      permissionOptions: {
-        requestFunction: function (data) {
-          var vm = this
-          return this.apiGetUserPermissions(this.url, data, function (result) {
-            vm.dispatch('success', result)
-          })
-        },
-        responseAdapter: function (data) {
-          return data
-        },
-        perPage: 10,
-        headings: {
-          systemName: 'Database name',
-          serverName: 'Server name',
-          userType: 'User type',
-          delete: 'Delete'
-        },
-        sortable: ['systemName', 'serverName', 'userType'],
-        filterable: ['systemName', 'serverName', 'userType']
-      },
       user: null,
-      userTypeOptions: ['Administrator', 'Regular User', 'Suspended User'],
       databases: [],
       newPermission: {
         database: null,
         server: null,
         description: null,
         userType: 'Regular User'
-      }
+      },
+      userTypeOptions: ['Administrator', 'Regular User', 'Suspended User']
     }
   },
   components: {
     AccountStarIcon,
     DatabaseIcon,
-    DeleteIcon,
     PencilIcon,
-    ServerIcon
+    ServerIcon,
+    UserTable,
+    UserPermissionTable
   },
   props: [ 'baseUrl' ],
   methods: {
-    onRowClicked: function (event) {
-      this.user = event.row
+    onUserSelected: function (user) {
+      this.user = user
 
       var vm = this
       this.$nextTick(function () {
@@ -215,22 +157,6 @@ export default {
     },
     onGatekeeperAccessChanged: function (event) {
       this.apiPatchUserGatekeeperAccess(this.user.id, event)
-    },
-    deleteUserPermission: function (row, event) {
-      var vm = this
-
-      this.$bvModal.msgBoxConfirm('Are you sure?', {
-        okTitle: 'Yes',
-        okVariant: 'danger',
-        cancelTitle: 'No'
-      })
-        .then(value => {
-          if (value) {
-            vm.apiDeleteUserPermission(row, function (result) {
-              vm.$refs.permissionsTable.refresh()
-            })
-          }
-        })
     },
     resetNewPermission: function () {
       this.newPermission = {
@@ -315,19 +241,16 @@ export default {
   },
   mounted: function () {
     var vm = this
-    this.apiGetDatabases(function (result) {
-      result.forEach(function (d) {
+    this.apiGetDatabases({ page: 1, limit: Number.MAX_SAFE_INTEGER }, function (result) {
+      result.data.forEach(function (d) {
         d.text = d.serverName + ' -> ' + d.systemName
       })
 
-      vm.databases = result
+      vm.databases = result.data
     })
   }
 }
 </script>
 
 <style>
-  .user-table tbody tr:hover {
-    cursor: pointer;
-  }
 </style>

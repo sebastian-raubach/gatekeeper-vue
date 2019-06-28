@@ -1,5 +1,8 @@
 export default {
   methods: {
+    toDate (date) {
+      return date.toLocaleDateString()
+    },
     authAjax ({ url = null, method = 'GET', data = null, dataType = 'json', success = null, error = null }) {
       var vm = this
 
