@@ -17,8 +17,14 @@ export default {
     apiGetNewRequests: function (onSuccess, onError) {
       return this.authAjax({ url: this.getBaseUrl() + 'request/new', method: 'GET', success: onSuccess, error: onError })
     },
+    apiDeleteRequestNew: function (requestId, onSuccess, onError) {
+      return this.authAjax({ url: this.getBaseUrl() + 'request/new/' + requestId, method: 'DELETE', success: onSuccess, error: onError })
+    },
     apiGetExistingRequests: function (onSuccess, onError) {
       return this.authAjax({ url: this.getBaseUrl() + 'request/existing', method: 'GET', success: onSuccess, error: onError })
+    },
+    apiDeleteRequestExisting: function (requestId, onSuccess, onError) {
+      return this.authAjax({ url: this.getBaseUrl() + 'request/existing/' + requestId, method: 'DELETE', success: onSuccess, error: onError })
     },
     // USERS
     apiGetUsers: function (queryData, onSuccess, onError) {

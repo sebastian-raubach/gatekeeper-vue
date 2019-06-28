@@ -1,7 +1,20 @@
 export default {
   methods: {
-    toDate (date) {
-      return date.toLocaleDateString()
+    getPaginationTexts () {
+      return {
+        count: this.$t('paginationCount'),
+        first: this.$t('paginationFirst'),
+        last: this.$t('paginationLast'),
+        filter: this.$t('paginationFilter'),
+        filterPlaceholder: this.$t('paginationFilterPlaceholder'),
+        limit: this.$t('paginationLimit'),
+        page: this.$t('paginationPage'),
+        noResults: this.$t('paginationNoResult'),
+        filterBy: this.$t('paginationFilterBy'),
+        loading: this.$t('paginationLoading'),
+        defaultOption: this.$t('paginationDefaultOption'),
+        columns: this.$t('paginationColumns')
+      }
     },
     authAjax ({ url = null, method = 'GET', data = null, dataType = 'json', success = null, error = null }) {
       var vm = this

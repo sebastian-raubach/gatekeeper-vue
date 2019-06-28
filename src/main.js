@@ -13,20 +13,6 @@ import FlagIcon from 'vue-flag-icon'
 Vue.use(FlagIcon)
 
 var tableOptions = {
-  texts: {
-    count: i18n.t('paginationCount'),
-    first: i18n.t('paginationFirst'),
-    last: i18n.t('paginationLast'),
-    filter: i18n.t('paginationFilter'),
-    filterPlaceholder: i18n.t('paginationFilterPlaceholder'),
-    limit: i18n.t('paginationLimit'),
-    page: i18n.t('paginationPage'),
-    noResults: i18n.t('paginationNoResult'),
-    filterBy: i18n.t('paginationFilterBy'),
-    loading: i18n.t('paginationLoading'),
-    defaultOption: i18n.t('paginationDefaultOption'),
-    columns: i18n.t('paginationColumns')
-  },
   pagination: {
     nav: 'scroll',
     edge: false

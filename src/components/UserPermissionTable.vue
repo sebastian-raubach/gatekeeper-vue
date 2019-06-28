@@ -19,8 +19,10 @@
 
 <script>
 import DeleteIcon from 'vue-material-design-icons/Delete'
+import I18nTable from './I18nTable'
 
 export default {
+  extends: I18nTable,
   data: function () {
     return {
       columns: ['systemName', 'serverName', 'userType', 'delete'],

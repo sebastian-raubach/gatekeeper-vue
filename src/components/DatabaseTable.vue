@@ -17,8 +17,10 @@
 <script>
 import DeleteIcon from 'vue-material-design-icons/Delete.vue'
 import { EventBus } from '../event-bus.js'
+import I18nTable from './I18nTable'
 
 export default {
+  extends: I18nTable,
   data: function () {
     return {
       columns: ['systemName', 'serverName', 'description', 'delete'],

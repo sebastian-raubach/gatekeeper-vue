@@ -37,8 +37,10 @@
 import DeleteIcon from 'vue-material-design-icons/Delete'
 import ThumbDownIcon from 'vue-material-design-icons/ThumbDown'
 import ThumbUpIcon from 'vue-material-design-icons/ThumbUp'
+import I18nTable from './I18nTable'
 
 export default {
+  extends: I18nTable,
   data: function () {
     return {
       columns: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address', 'databaseSystemName', 'databaseServerName', 'createdOn', 'actions'],
@@ -79,34 +81,47 @@ export default {
   },
   methods: {
     onAction: function (decision, row) {
-      if (this.requestType === 'new') {
-        this.onActionNew(decision, row)
-      } else if (this.requestType === 'existing') {
-        this.onActionExisting(decision, row)
+      switch (decision) {
+        case 'delete':
+          this.onDelete(row)
+          break
+        case 'reject':
+          this.onReject(row)
+          break
+        case 'approve':
+          this.onApprove(row)
+          break
       }
+    },
+    onReject: function (row) {
+      // TODO: implement. Ask admin for feedback to send to client
+    },
+    onApprove: function (row) {
+      // TODO: implement
+    },
+    onDelete: function (row) {
+      var vm = this
+      this.$bvModal.msgBoxConfirm(this.$t('modalMessageSure'), {
+        okTitle: this.$t('genericYes'),
+        okVariant: 'danger',
+        cancelTitle: this.$t('genericNo')
+      })
+        .then(value => {
+          if (value) {
+            if (vm.requestType === 'new') {
+              vm.apiDeleteRequestNew(row.id, function (result) {
+                vm.refresh()
+              })
+            } else if (vm.requestType === 'existing') {
+              vm.apiDeleteRequestExisting(row.id, function (result) {
+                vm.refresh()
+              })
+            }
+          }
+        })
     },
     refresh: function () {
-      this.$refs.table.refresh()
-    },
-    onActionExisting: function (decision, row) {
-      switch (decision) {
-        case 'delete':
-          break
-        case 'reject':
-          break
-        case 'approve':
-          break
-      }
-    },
-    onActionNew: function (decision, row) {
-      switch (decision) {
-        case 'delete':
-          break
-        case 'reject':
-          break
-        case 'approve':
-          break
-      }
+      this.$emit('request-data')
     }
   }
 }

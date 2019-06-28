@@ -6,12 +6,14 @@
       <template v-if="newRequestData && newRequestData.length > 0">
         <h2>{{ $t('pageRequestsHeadingNew') }}</h2>
         <UserRequestTable :data="newRequestData"
+                          v-on:request-data="updateNewRequests()"
                           requestType="new" />
       </template>
 
       <template v-if="existingRequestData && existingRequestData.length > 0">
         <h2>{{ $t('pageRequestsHeadingExisting') }}</h2>
         <UserRequestTable :data="existingRequestData"
+                          v-on:request-data="updateExistingRequests()"
                           requestType="existing" />
       </template>
     </template>
@@ -32,15 +34,23 @@ export default {
   components: {
     UserRequestTable
   },
+  methods: {
+    updateNewRequests: function () {
+      var vm = this
+      this.apiGetNewRequests(function (result) {
+        vm.newRequestData = result
+      })
+    },
+    updateExistingRequests: function () {
+      var vm = this
+      this.apiGetExistingRequests(function (result) {
+        vm.existingRequestData = result
+      })
+    }
+  },
   mounted: function () {
-    var vm = this
-
-    this.apiGetNewRequests(function (result) {
-      vm.newRequestData = result
-    })
-    this.apiGetExistingRequests(function (result) {
-      vm.existingRequestData = result
-    })
+    this.updateNewRequests()
+    this.updateExistingRequests()
   }
 }
 </script>

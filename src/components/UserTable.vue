@@ -8,7 +8,10 @@
 </template>
 
 <script>
+import I18nTable from './I18nTable'
+
 export default {
+  extends: I18nTable,
   data: function () {
     return {
       user: null,

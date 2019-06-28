@@ -177,10 +177,10 @@ export default {
     onDeleteUserClicked: function () {
       var vm = this
 
-      this.$bvModal.msgBoxConfirm('Are you sure?', {
-        okTitle: 'Yes',
+      this.$bvModal.msgBoxConfirm(this.$t('modalMessageSure'), {
+        okTitle: this.$t('genericYes'),
         okVariant: 'danger',
-        cancelTitle: 'No'
+        cancelTitle: this.$t('genericNo')
       })
         .then(value => {
           if (value) {
