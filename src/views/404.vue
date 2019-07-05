@@ -17,5 +17,6 @@ export default {
 #notFound {
   padding: 10em;
   color: white;
+  min-height: calc(100vh - 37px);
 }
 </style>

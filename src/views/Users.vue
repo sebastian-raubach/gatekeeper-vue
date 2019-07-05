@@ -1,5 +1,5 @@
 <template>
-  <b-col>
+  <b-container fluid class="mt-3">
     <h1>{{ $t('pageUsersHeading') }}</h1>
     <UserTable ref="userTable"
                :baseUrl="baseUrl"
@@ -109,7 +109,7 @@
         </b-col>
       </b-row>
     </template>
-  </b-col>
+  </b-container>
 </template>
 
 <script>

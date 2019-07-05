@@ -38,14 +38,26 @@ export default {
           withCredentials: true
         }
       })
-        .fail(function (jqXHR) {
-          // Log the user out if the result is forbidden
-          if (!error && jqXHR.status === 403) {
-            vm.$store.dispatch('ON_TOKEN_CHANGED', null)
-            vm.$router.push('/login')
+        .fail(function (jqXHR, textStatus) {
+          if (textStatus === 'timeout') {
+            vm.$bvToast.toast('Request to the server timed out.', {
+              title: 'Error',
+              variant: 'danger',
+              autoHideDelay: 5000,
+              appendToast: true
+            })
           }
 
-          if (error) {
+          // Log the user out if the result is forbidden and no error method has been provided
+          // Otherwise, we assume that the calling method takes care of the error
+          if (!error) {
+            if (jqXHR.status === 403) {
+              vm.$store.dispatch('ON_TOKEN_CHANGED', null)
+              vm.$router.push('/gk/login')
+            } else if (process.env.NODE_ENV === 'development') {
+              console.error(jqXHR)
+            }
+          } else {
             error(jqXHR)
           }
         })
@@ -64,6 +76,8 @@ export default {
         })
     },
     unauthAjax ({ url = null, method = 'GET', data = null, dataType = 'json', success = null, error = null }) {
+      var vm = this
+
       var requestData = null
 
       // Stringify the data object for non-GET requests
@@ -79,9 +93,19 @@ export default {
         crossDomain: true,
         data: requestData
       })
-        .fail(function (jqXHR) {
+        .fail(function (jqXHR, textStatus) {
+          if (textStatus === 'timeout') {
+            vm.$bvToast.toast('Request to the server timed out.', {
+              title: 'Error',
+              variant: 'danger',
+              autoHideDelay: 5000,
+              appendToast: true
+            })
+          }
           if (error) {
             error(jqXHR)
+          } else if (process.env.NODE_ENV === 'development') {
+            console.error(jqXHR)
           }
         })
         .done(function (data) {

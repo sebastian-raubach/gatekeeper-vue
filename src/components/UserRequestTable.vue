@@ -97,7 +97,30 @@ export default {
       // TODO: implement. Ask admin for feedback to send to client
     },
     onApprove: function (row) {
-      // TODO: implement
+      var vm = this
+      this.$bvModal.msgBoxConfirm(this.$t('modalMessageSure'), {
+        okTitle: this.$t('genericYes'),
+        okVariant: 'danger',
+        cancelTitle: this.$t('genericNo')
+      })
+        .then(value => {
+          if (value) {
+            var decision = {
+              requestId: row.id,
+              decision: 'APPROVE'
+            }
+
+            if (vm.requestType === 'new') {
+              vm.apiPostDecisionNewRequests(row.id, decision, function (result) {
+                vm.refresh()
+              })
+            } else if (vm.requestType === 'existing') {
+              vm.apiPostDecisionExistingRequests(row.id, decision, function (result) {
+                vm.refresh()
+              })
+            }
+          }
+        })
     },
     onDelete: function (row) {
       var vm = this

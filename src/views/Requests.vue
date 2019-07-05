@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <b-container fluid class="mt-3">
     <h1>{{ $t('pageRequestsHeading') }}</h1>
 
     <template v-if="(newRequestData && newRequestData.length > 0) || (existingRequestData && existingRequestData.length > 0)">

@@ -7,10 +7,23 @@ Vue.use(VueRouter)
 // Routes
 const routes = [
   {
-    path: '/login',
-    name: 'Login',
+    path: '/gk',
+    component: () => import(/* webpackChunkName: "public" */ './views/Public.vue'),
     props: { baseUrl: null },
-    component: () => import(/* webpackChunkName: "login" */ './views/Login.vue')
+    children: [
+      {
+        path: 'login',
+        name: 'Login',
+        props: { baseUrl: null },
+        component: () => import(/* webpackChunkName: "login" */ './views/Login.vue')
+      },
+      {
+        path: 'about',
+        name: 'Public About',
+        props: { baseUrl: null },
+        component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      }
+    ]
   },
   {
     path: '/',
@@ -26,7 +39,13 @@ const routes = [
         props: { baseUrl: null }
       },
       {
-        path: 'settings',
+        path: 'about',
+        name: 'About',
+        props: { baseUrl: null },
+        component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      },
+      {
+        path: '',
         component: () => import(/* webpackChunkName: "settings" */ './views/Settings.vue'),
         name: 'Settings',
         beforeEnter: requireAuth,
@@ -47,7 +66,8 @@ const routes = [
         props: { baseUrl: null }
       }
     ]
-  }, {
+  },
+  {
     // not found handler
     path: '*',
     component: () => import(/* webpackChunkName: "notfound" */ './views/404.vue')
@@ -57,7 +77,7 @@ const routes = [
 function requireAuth (to, from, next) {
   if (!auth.loggedIn()) {
     next({
-      path: '/login'
+      path: '/gk/login'
     })
   } else {
     next()

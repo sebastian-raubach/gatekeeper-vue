@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <b-container fluid class="mt-3">
     <b-row>
       <b-col xs=12>
         <h1>Databases</h1>

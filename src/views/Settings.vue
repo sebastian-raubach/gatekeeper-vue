@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <b-container fluid class="mt-3">
     <h1>{{ $t('pageSettingsHeading') }}</h1>
     <b-row>
       <b-col xs=12 md=6>
@@ -153,7 +153,7 @@ export default {
 
             // Revoke the token and redirect to login
             vm.$store.dispatch('ON_TOKEN_CHANGED', null)
-            vm.$router.push('/login')
+            vm.$router.push('/gk/login')
           }
         }, function (err) {
           if (err.status === 401) {
