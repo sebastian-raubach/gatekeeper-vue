@@ -33,22 +33,6 @@ Vue.mixin(api)
 // Set base URL based on environment
 var baseUrl = 'http://localhost:8080/gatekeeper-api/v1/'
 
-router.options.routes.forEach(function (r) {
-  if (!r.props) {
-    r.props = {}
-  }
-  r.props.baseUrl = baseUrl
-
-  if (r.children) {
-    r.children.forEach(function (c) {
-      if (!c.props) {
-        c.props = {}
-      }
-      c.props.baseUrl = baseUrl
-    })
-  }
-})
-
 store.commit('ON_BASE_URL_CHANGED_MUTATION', baseUrl)
 
 // Make sure jQuery is available
@@ -58,8 +42,6 @@ Vue.use({
     window.jQuery = Vue.prototype.$jQuery
     Vue.prototype.$zxcvbn = require('zxcvbn')
     window.zxcvbn = Vue.prototype.$zxcvbn
-    Vue.prototype.$axios = require('axios')
-    window.axios = Vue.prototype.$axios
     Vue.prototype.$moment = require('moment')
     window.moment = Vue.prototype.$moment
   }
@@ -77,9 +59,5 @@ new Vue({
   router: router,
   store: store,
   i18n: i18n,
-  render: h => h(App, {
-    props: {
-      baseUrl: baseUrl
-    }
-  })
+  render: h => h(App)
 }).$mount('#app')

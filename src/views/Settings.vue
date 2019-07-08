@@ -86,7 +86,6 @@ export default {
       canContinue: false
     }
   },
-  props: [ 'baseUrl' ],
   computed: {
     ...mapState([
       'token'

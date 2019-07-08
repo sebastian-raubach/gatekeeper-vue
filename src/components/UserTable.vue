@@ -1,6 +1,5 @@
 <template>
-  <v-server-table :url="baseUrl + 'user'"
-                  :columns="columns"
+  <v-server-table :columns="columns"
                   :options="options"
                   ref="table"
                   v-on:row-click="onRowClicked($event)"
@@ -8,6 +7,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import I18nTable from './I18nTable'
 
 export default {
@@ -43,11 +43,10 @@ export default {
       }
     }
   },
-  props: {
-    baseUrl: {
-      type: String,
-      required: true
-    }
+  computed: {
+    ...mapState([
+      'baseUrl'
+    ])
   },
   methods: {
     onRowClicked: function (event) {

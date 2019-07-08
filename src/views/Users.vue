@@ -2,7 +2,6 @@
   <b-container fluid class="mt-3">
     <h1>{{ $t('pageUsersHeading') }}</h1>
     <UserTable ref="userTable"
-               :baseUrl="baseUrl"
                v-on:user-selected="(user) => onUserSelected(user)" />
     <template v-if="user">
       <b-row>
@@ -36,8 +35,7 @@
         <b-col xs=12 md=6>
           <b-card header-tag="header" class="mb-3">
             <h6 slot="header" class="mb-0">{{ $t('pageUsersHeadingPermissions') }}</h6>
-            <UserPermissionTable :baseUrl="baseUrl"
-                                 :user="user"
+            <UserPermissionTable :user="user"
                                  ref="permissionsTable" />
           </b-card>
         </b-col>
@@ -145,7 +143,6 @@ export default {
     UserTable,
     UserPermissionTable
   },
-  props: [ 'baseUrl' ],
   methods: {
     onUserSelected: function (user) {
       this.user = user
@@ -242,11 +239,13 @@ export default {
   mounted: function () {
     var vm = this
     this.apiGetDatabases({ page: 1, limit: Number.MAX_SAFE_INTEGER }, function (result) {
-      result.data.forEach(function (d) {
-        d.text = d.serverName + ' -> ' + d.systemName
-      })
+      if (result && result.data) {
+        result.data.forEach(function (d) {
+          d.text = d.serverName + ' -> ' + d.systemName
+        })
 
-      vm.databases = result.data
+        vm.databases = result.data
+      }
     })
   }
 }

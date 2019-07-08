@@ -3,7 +3,7 @@
     <b-row>
       <b-col xs=12>
         <h1>Databases</h1>
-        <DatabaseTable :baseUrl="baseUrl" />
+        <DatabaseTable />
       </b-col>
     </b-row>
   </b-container>
@@ -17,7 +17,6 @@ export default {
     return {
     }
   },
-  props: [ 'baseUrl' ],
   components: {
     DatabaseTable
   }

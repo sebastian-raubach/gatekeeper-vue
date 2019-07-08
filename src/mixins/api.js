@@ -1,5 +1,3 @@
-import store from '../store/store'
-
 export default {
   methods: {
     // TOKEN
@@ -13,7 +11,7 @@ export default {
      * @returns A Promise
      */
     apiDeleteToken: function (user, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'token', method: 'DELETE', data: user, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'token', method: 'DELETE', data: user, success: onSuccess, error: onError })
     },
     /**
      * Requests a token given the user details
@@ -24,7 +22,7 @@ export default {
      * @returns A Promise
      */
     apiPostToken: function (user, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'token', method: 'POST', data: user, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'token', method: 'POST', data: user, success: onSuccess, error: onError })
     },
     // STATS
     /**
@@ -35,78 +33,74 @@ export default {
      * @returns A Promise
      */
     apiGetStatCounts: function (onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'stat/count', method: 'GET', success: onSuccess, error: onError })
+      return this.authAjax({ url: 'stat/count', method: 'GET', success: onSuccess, error: onError })
     },
     // REQUESTS
     apiGetNewRequests: function (onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'request/new', method: 'GET', success: onSuccess, error: onError })
+      return this.authAjax({ url: 'request/new', method: 'GET', success: onSuccess, error: onError })
     },
     apiPostDecisionNewRequests: function (requestId, decision, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'request/new/' + requestId + '/decision', method: 'POST', data: decision, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'request/new/' + requestId + '/decision', method: 'POST', data: decision, success: onSuccess, error: onError })
     },
     apiDeleteRequestNew: function (requestId, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'request/new/' + requestId, method: 'DELETE', success: onSuccess, error: onError })
+      return this.authAjax({ url: 'request/new/' + requestId, method: 'DELETE', success: onSuccess, error: onError })
     },
     apiGetExistingRequests: function (onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'request/existing', method: 'GET', success: onSuccess, error: onError })
+      return this.authAjax({ url: 'request/existing', method: 'GET', success: onSuccess, error: onError })
     },
     apiPostDecisionExistingRequests: function (requestId, decision, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'request/existing/' + requestId + '/decision', method: 'POST', data: decision, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'request/existing/' + requestId + '/decision', method: 'POST', data: decision, success: onSuccess, error: onError })
     },
     apiDeleteRequestExisting: function (requestId, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'request/existing/' + requestId, method: 'DELETE', success: onSuccess, error: onError })
+      return this.authAjax({ url: 'request/existing/' + requestId, method: 'DELETE', success: onSuccess, error: onError })
     },
     // USERS
     apiGetUsers: function (queryData, onSuccess, onError) {
       queryData.page -= 1
-      return this.authAjax({ url: this.getBaseUrl() + 'user', method: 'GET', data: queryData, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'user', method: 'GET', data: queryData, success: onSuccess, error: onError })
     },
     apiGetUser: function (userId, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'user/' + userId, method: 'GET', success: onSuccess, error: onError })
+      return this.authAjax({ url: 'user/' + userId, method: 'GET', success: onSuccess, error: onError })
     },
     apiDeleteUser: function (userId, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'user/' + userId, method: 'DELETE', success: onSuccess, error: onError })
+      return this.authAjax({ url: 'user/' + userId, method: 'DELETE', success: onSuccess, error: onError })
     },
     apiPatchUserEmail: function (userId, emailUpdate, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'user/' + userId + '/email', method: 'PATCH', data: emailUpdate, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'user/' + userId + '/email', method: 'PATCH', data: emailUpdate, success: onSuccess, error: onError })
     },
     apiPatchUserPassword: function (userId, passwordUpdate, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'user/' + userId + '/password', method: 'PATCH', data: passwordUpdate, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'user/' + userId + '/password', method: 'PATCH', data: passwordUpdate, success: onSuccess, error: onError })
     },
     apiPatchUserGatekeeperAccess: function (userId, gatekeeperAccess, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'user/' + userId + '/gatekeeper', method: 'PATCH', data: gatekeeperAccess, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'user/' + userId + '/gatekeeper', method: 'PATCH', data: gatekeeperAccess, success: onSuccess, error: onError })
     },
     apiPostPasswordReset: function (resetRequest, onSuccess, onError) {
-      return this.unauthAjax({ url: this.getBaseUrl() + 'passwordreset', method: 'POST', data: resetRequest, success: onSuccess, error: onError })
+      return this.unauthAjax({ url: 'passwordreset', method: 'POST', data: resetRequest, success: onSuccess, error: onError })
     },
     // DATABASES
     apiGetDatabases: function (queryData, onSuccess, onError) {
       queryData.page -= 1
-      return this.authAjax({ url: this.getBaseUrl() + 'database', method: 'GET', data: queryData, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'database', method: 'GET', data: queryData, success: onSuccess, error: onError })
     },
     apiPostDatabase: function (database, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'database', method: 'POST', data: database, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'database', method: 'POST', data: database, success: onSuccess, error: onError })
     },
     apiDeleteDatabase: function (databaseId, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'database/' + databaseId, method: 'DELETE', success: onSuccess, error: onError })
+      return this.authAjax({ url: 'database/' + databaseId, method: 'DELETE', success: onSuccess, error: onError })
     },
     // PERMISSIONS
     apiGetUserPermissions: function (userId, queryData, onSuccess, onError) {
       queryData.page -= 1
-      return this.authAjax({ url: this.getBaseUrl() + 'user/' + userId + '/permission', method: 'GET', data: queryData, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'user/' + userId + '/permission', method: 'GET', data: queryData, success: onSuccess, error: onError })
     },
     apiPatchUserPermission: function (permission, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'user/' + permission.userId + '/permission', method: 'PATCH', data: permission, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'user/' + permission.userId + '/permission', method: 'PATCH', data: permission, success: onSuccess, error: onError })
     },
     apiPostUserPermission: function (permission, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'user/' + permission.userId + '/permission', method: 'POST', data: permission, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'user/' + permission.userId + '/permission', method: 'POST', data: permission, success: onSuccess, error: onError })
     },
     apiDeleteUserPermission: function (permission, onSuccess, onError) {
-      return this.authAjax({ url: this.getBaseUrl() + 'user/' + permission.userId + '/permission', method: 'DELETE', data: permission, success: onSuccess, error: onError })
-    },
-    // UTILITY
-    getBaseUrl () {
-      return store.getters.baseUrl
+      return this.authAjax({ url: 'user/' + permission.userId + '/permission', method: 'DELETE', data: permission, success: onSuccess, error: onError })
     }
   }
 }

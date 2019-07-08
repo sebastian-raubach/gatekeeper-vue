@@ -55,7 +55,6 @@ export default {
     DatabaseIcon,
     SettingsIcon
   },
-  props: [ 'baseUrl' ],
   computed: {
     ...mapState([
       'token'

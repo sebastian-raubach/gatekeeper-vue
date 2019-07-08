@@ -34,7 +34,6 @@
 
 <script>
 export default {
-  props: [ 'baseUrl' ],
   data: function () {
     return {
       user: {
@@ -84,9 +83,9 @@ export default {
         // If it's successful, finally store them
         vm.$store.dispatch('ON_TOKEN_CHANGED', result)
         vm.$router.push('/')
-      }, function (xhr) {
+      }, function (error) {
         vm.error = true
-        if (xhr.status === 403) {
+        if (error.response.status === 403) {
           vm.response = 'Invalid username or password.'
         } else {
           vm.response = 'Server appears to be offline.'

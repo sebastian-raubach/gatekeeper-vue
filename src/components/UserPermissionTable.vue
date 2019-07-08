@@ -1,6 +1,5 @@
 <template>
-  <v-server-table :url="'' + user.id"
-                  ref="table"
+  <v-server-table ref="table"
                   :columns=columns
                   :options=options>
     <b-button variant="danger"
@@ -50,10 +49,6 @@ export default {
     }
   },
   props: {
-    baseUrl: {
-      type: String,
-      required: true
-    },
     user: {
       type: Object,
       required: true

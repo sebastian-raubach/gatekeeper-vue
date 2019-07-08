@@ -18,6 +18,7 @@
 import DeleteIcon from 'vue-material-design-icons/Delete.vue'
 import { EventBus } from '../event-bus.js'
 import I18nTable from './I18nTable'
+import { mapState } from 'vuex'
 
 export default {
   extends: I18nTable,
@@ -46,11 +47,10 @@ export default {
       }
     }
   },
-  props: {
-    baseUrl: {
-      type: String,
-      required: true
-    }
+  computed: {
+    ...mapState([
+      'baseUrl'
+    ])
   },
   components: {
     DeleteIcon
