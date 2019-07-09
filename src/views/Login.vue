@@ -18,15 +18,19 @@
     <b-modal id="modal-password"
              :title="$t('modalHeadingResetPassword')"
              :ok-title="$t('genericSend')"
+             :ok-disabled="resetInProgress"
              :cancel-title="$t('genericCancel')"
+             :cancel-disabled="resetInProgress"
+             ref="resetModal"
              @ok="handleOk">
       <b-form ref="resetForm" :class="formValidated ? 'was-validated' : 'needs-validation'" @submit.stop.prevent="onPasswordReset">
         <b-form-group :label="$t('formLabelUsername')" label-for="inputUsername" :invalid-feedback="$t('formFeedbackUsernameRequired')">
           <b-form-input id="inputUsername" name="username" :placeholder="$t('formLabelUsername')" required autofocus v-model="reset.username" />
         </b-form-group>
         <b-form-group :label="$t('formLabelEmail')" label-for="inputEmail" :invalid-feedback="$t('formFeedbackEmailRequired')">
-          <b-form-input id="inputEmail" name="email" :placeholder="$t('formLabelEmail')" type="email" required v-model="reset.email"/>
+          <b-form-input id="inputEmail" name="email" :placeholder="$t('formLabelEmail')" type="email" required v-model="reset.email" :state="formError ? 'invalid' : null"/>
         </b-form-group>
+        <p class="text-danger" v-if="formError">{{ formError }} </p>
       </b-form>
     </b-modal>
   </div>
@@ -45,7 +49,9 @@ export default {
         email: null
       },
       formValidated: false,
+      formError: null,
       error: false,
+      resetInProgress: false,
       section: 'Login',
       response: ''
     }
@@ -59,13 +65,38 @@ export default {
       var vm = this
 
       if (this.checkFormValidity()) {
+        this.formError = null
+
+        this.resetInProgress = true
         this.apiPostPasswordReset(this.reset, function (result) {
-          // TODO
-          console.log(result)
-          vm.$refs.resetForm.hide()
+          if (result === true) {
+            vm.$bvToast.toast(vm.$t('toastPasswordResetSuccessful'), {
+              title: vm.$t('genericSuccess'),
+              variant: 'success',
+              autoHideDelay: 5000,
+              appendToast: true
+            })
+          } else {
+            vm.$bvToast.toast(vm.$t('errorMessageUnknownServerError'), {
+              title: vm.$t('genericError'),
+              variant: 'danger',
+              autoHideDelay: 5000,
+              appendToast: true
+            })
+          }
+          vm.$refs.resetModal.hide()
+          vm.resetInProgress = false
         }, function (err) {
-          // TODO
-          console.error(err)
+          vm.formValidated = false
+          if (err && err.response) {
+            if (err.response.status === 400) {
+              vm.formError = vm.$t('errorMessageInvalidEmailUsername')
+            } else if (err.response.status === 503) {
+              vm.formError = vm.$t('errorMessageEmailUnavailable')
+            } else {
+              vm.formError = vm.$t('errorMessageUnknownServerError')
+            }
+          }
         })
       }
     },
@@ -84,11 +115,12 @@ export default {
         vm.$store.dispatch('ON_TOKEN_CHANGED', result)
         vm.$router.push('/')
       }, function (error) {
+        console.log(error)
         vm.error = true
-        if (error.response.status === 403) {
-          vm.response = 'Invalid username or password.'
+        if (error.status === 403 || error.status === 400) {
+          vm.response = vm.$t('errorMessageInvalidUsernamePassword')
         } else {
-          vm.response = 'Server appears to be offline.'
+          vm.response = vm.$t('errorMessageServerUnavailable')
         }
         // If they're wrong, remove
         vm.$store.dispatch('ON_TOKEN_CHANGED', null)
