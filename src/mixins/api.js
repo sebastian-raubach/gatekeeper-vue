@@ -57,6 +57,13 @@ export default {
     apiDeleteRequestExisting: function (requestId, onSuccess, onError) {
       return this.authAjax({ url: 'request/existing/' + requestId, method: 'DELETE', success: onSuccess, error: onError })
     },
+    apiPostActivationRequest: function (activationKey, onSuccess, onError) {
+      var data = {
+        activationKey: activationKey,
+        locale: store.getters.locale
+      }
+      return this.unauthAjax({ url: 'request/activation', data: data, method: 'POST', success: onSuccess, error: onError })
+    },
     // USERS
     apiGetUsers: function (queryData, onSuccess, onError) {
       queryData.page -= 1
