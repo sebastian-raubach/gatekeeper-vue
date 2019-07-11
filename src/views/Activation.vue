@@ -1,7 +1,7 @@
 <template>
-  <b-container>
+  <b-container class="mt-3">
     <h1>{{ $t('pageActivationTitle') }}</h1>
-    <p v-if="!activationKey">{{ $t('') }}</p>
+    <h5 v-if="!activationKey" class="text-danger">{{ $t('errorMessageNoActivationKey') }}</h5>
     <div v-else>
       <div class="text-center" v-if="!decision">
         <b-spinner class="m-5" variant="info" :label="$t('paginationLoading')"></b-spinner>

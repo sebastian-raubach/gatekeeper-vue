@@ -31,7 +31,7 @@ Vue.mixin(mixin)
 Vue.mixin(api)
 
 // Set base URL based on environment
-var baseUrl = 'http://localhost:8080/gatekeeper-api/v1/'
+var baseUrl = 'http://localhost:8080/gatekeeper/v3.6.0/api/'
 
 store.commit('ON_BASE_URL_CHANGED_MUTATION', baseUrl)
 
