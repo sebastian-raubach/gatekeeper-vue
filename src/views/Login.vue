@@ -86,15 +86,18 @@ export default {
           }
           vm.$refs.resetModal.hide()
           vm.resetInProgress = false
-        }, function (err) {
-          vm.formValidated = false
-          if (err && err.response) {
-            if (err.response.status === 400) {
-              vm.formError = vm.$t('errorMessageInvalidEmailUsername')
-            } else if (err.response.status === 503) {
-              vm.formError = vm.$t('errorMessageEmailUnavailable')
-            } else {
-              vm.formError = vm.$t('errorMessageUnknownServerError')
+        }, {
+          codes: [],
+          callback: function (err) {
+            vm.formValidated = false
+            if (err) {
+              if (err.status === 400) {
+                vm.formError = vm.$t('errorMessageInvalidEmailUsername')
+              } else if (err.status === 503) {
+                vm.formError = vm.$t('errorMessageEmailUnavailable')
+              } else {
+                vm.formError = vm.$t('errorMessageUnknownServerError')
+              }
             }
           }
         })
@@ -114,16 +117,18 @@ export default {
         // If it's successful, finally store them
         vm.$store.dispatch('ON_TOKEN_CHANGED', result)
         vm.$router.push('/')
-      }, function (error) {
-        console.log(error)
-        vm.error = true
-        if (error.status === 403 || error.status === 400) {
-          vm.response = vm.$t('errorMessageInvalidUsernamePassword')
-        } else {
-          vm.response = vm.$t('errorMessageServerUnavailable')
+      }, {
+        codes: [],
+        callback: function (error) {
+          vm.error = true
+          if (error.status === 403 || error.status === 400) {
+            vm.response = vm.$t('errorMessageInvalidUsernamePassword')
+          } else {
+            vm.response = vm.$t('errorMessageServerUnavailable')
+          }
+          // If they're wrong, remove
+          vm.$store.dispatch('ON_TOKEN_CHANGED', null)
         }
-        // If they're wrong, remove
-        vm.$store.dispatch('ON_TOKEN_CHANGED', null)
       })
     },
     resetResponse () {

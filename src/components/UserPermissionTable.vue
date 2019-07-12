@@ -1,5 +1,6 @@
 <template>
   <v-server-table ref="table"
+                  :url="'' + user.id"
                   :columns=columns
                   :options=options>
     <b-button variant="danger"

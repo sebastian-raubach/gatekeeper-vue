@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import auth from '@/auth'
+import store from '@/store/store'
 
 Vue.use(VueRouter)
 
@@ -30,13 +31,15 @@ const routes = [
   {
     path: '/',
     component: () => import(/* webpackChunkName: "main" */ './views/Main.vue'),
-    beforeEnter: requireAuth,
     children: [
       {
         path: 'users',
         component: () => import(/* webpackChunkName: "users" */ './views/Users.vue'),
         name: 'Users',
-        beforeEnter: requireAuth
+        beforeEnter: requireAuth,
+        meta: {
+          adminOnly: true
+        }
       },
       {
         path: 'about',
@@ -53,13 +56,19 @@ const routes = [
         path: 'databases',
         component: () => import(/* webpackChunkName: "databases" */ './views/Databases.vue'),
         name: 'Databases',
-        beforeEnter: requireAuth
+        beforeEnter: requireAuth,
+        meta: {
+          adminOnly: true
+        }
       },
       {
         path: 'requests',
         component: () => import(/* webpackChunkName: "requests" */ './views/Requests.vue'),
         name: 'Requests',
-        beforeEnter: requireAuth
+        beforeEnter: requireAuth,
+        meta: {
+          adminOnly: true
+        }
       }
     ]
   },
@@ -71,10 +80,19 @@ const routes = [
 ]
 
 function requireAuth (to, from, next) {
+  const token = store.getters.token
   if (!auth.loggedIn()) {
     next({
       path: '/gk/login'
     })
+  } else if (to.meta.adminOnly) {
+    if (token && token.type && token.type.description === 'Administrator') {
+      next()
+    } else {
+      next({
+        path: '/'
+      })
+    }
   } else {
     next()
   }

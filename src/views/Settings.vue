@@ -154,16 +154,19 @@ export default {
             vm.$store.dispatch('ON_TOKEN_CHANGED', null)
             vm.$router.push('/gk/login')
           }
-        }, function (err) {
-          if (err.status === 401) {
-            vm.$bvToast.toast('Update failed. Wrong password provided.', {
-              title: 'Password',
-              variant: 'danger',
-              autoHideDelay: 5000,
-              appendToast: true
-            })
-          } else {
-            console.error(err)
+        }, {
+          codes: [401],
+          callback: function (err) {
+            if (err.status === 401) {
+              vm.$bvToast.toast('Update failed. Wrong password provided.', {
+                title: 'Password',
+                variant: 'danger',
+                autoHideDelay: 5000,
+                appendToast: true
+              })
+            } else {
+              console.error(err)
+            }
           }
         })
       }
@@ -188,8 +191,6 @@ export default {
               appendToast: true
             })
           }
-        }, function (err) {
-          console.error(err)
         })
       }
     }

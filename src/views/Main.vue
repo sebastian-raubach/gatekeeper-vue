@@ -65,9 +65,11 @@ export default {
       var vm = this
       this.apiGetStatCounts(function (result) {
         vm.stats = result
-      }, function (err) {
-        console.error(err)
-        vm.stats = null
+      }, {
+        codes: [],
+        callback: function () {
+          vm.stats = null
+        }
       })
     }
   },

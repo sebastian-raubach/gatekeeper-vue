@@ -22,7 +22,58 @@ export default {
         columns: this.$t('paginationColumns')
       }
     },
-    authAjax ({ url = null, method = 'GET', data = null, dataType = 'json', success = null, error = null }) {
+    /**
+     * This is the default error method that gets called if no other error handler is defined for the error code that caused it.
+     * @param {*} error The error response object
+     */
+    handleError (error) {
+      var variant = 'danger'
+      var title = this.$t('genericError')
+      var message = error.statusText
+      switch (error.status) {
+        case 400:
+          message = this.$t('httpErrorFourOO')
+          break
+        case 401:
+          message = this.$t('httpErrorFourOOne')
+          break
+        case 403:
+          message = this.$t('httpErrorFourOThree')
+          break
+        case 404:
+          message = this.$t('httpErrorFourOFour')
+          break
+        case 405:
+          message = this.$t('httpErrorFourOFour')
+          break
+        case 408:
+          message = this.$t('httpErrorFourOEight')
+          break
+        case 409:
+          message = this.$t('httpErrorFourONine')
+          break
+        case 410:
+          message = this.$t('httpErrorFourTen')
+          break
+        case 500:
+          message = this.$t('httpErrorFiveOO')
+          break
+        case 501:
+          message = this.$t('httpErrorFiveOOne')
+          break
+        case 503:
+          message = this.$t('httpErrorFiveOThree')
+          break
+      }
+
+      this.$bvToast.toast(message, {
+        title: title,
+        variant: variant,
+        autoHideDelay: 5000,
+        appendToast: true
+      })
+    },
+    authAjax ({ url = null, method = 'GET', data = null, dataType = 'json', success = null, error = { codes: [], callback: this.handleError } }) {
       var vm = this
 
       var requestData = null
@@ -65,8 +116,14 @@ export default {
             } else if (process.env.NODE_ENV === 'development') {
               console.error(jqXHR)
             }
+          } else if (error && error.callback) {
+            if (error.codes.length === 0 || error.codes.includes(error.status)) {
+              error.callback(jqXHR)
+            } else {
+              vm.handleError(jqXHR)
+            }
           } else {
-            error(jqXHR)
+            console.error(jqXHR)
           }
         })
         .done(function (data) {
@@ -156,7 +213,7 @@ export default {
     //       }
     //     })
     // },
-    unauthAjax ({ url = null, method = 'GET', data = null, dataType = 'json', success = null, error = null }) {
+    unauthAjax ({ url = null, method = 'GET', data = null, dataType = 'json', success = null, error = { codes: [], callback: this.handleError } }) {
       var vm = this
       var requestData = null
       var requestParams = null
@@ -189,8 +246,12 @@ export default {
         .catch(function (err) {
           if (err.response) {
             // The request was made and the server responded with a status code that falls out of the range of 2xx
-            if (error) {
-              error(err)
+            if (error && error.callback) {
+              if (error.codes.length === 0 || error.codes.includes(err.status)) {
+                error.callback(err.response)
+              } else {
+                vm.handleError(err.response)
+              }
             } else if (process.env.NODE_ENV === 'development') {
               console.error(err)
             }

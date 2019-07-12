@@ -48,13 +48,16 @@ export default {
     if (this.activationKey) {
       this.apiPostActivationRequest(this.activationKey, function (result) {
         vm.decision = result
-      }, function (error) {
-        if (error.request && error.request.status === 404) {
-          vm.decision = 'NOT_FOUND'
-        } else if (error.request.response) {
-          vm.decision = error.request.response.description
-        } else {
-          vm.decision = 'UKNOWN_ERROR'
+      }, {
+        codes: [],
+        callback: function (error) {
+          if (error.request && error.request.status === 404) {
+            vm.decision = 'NOT_FOUND'
+          } else if (error.request.response) {
+            vm.decision = error.request.response.description
+          } else {
+            vm.decision = 'UKNOWN_ERROR'
+          }
         }
       })
     }
