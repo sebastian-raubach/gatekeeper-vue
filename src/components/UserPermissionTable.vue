@@ -6,6 +6,7 @@
     <b-button variant="danger"
               slot="delete"
               slot-scope="props"
+              size="sm"
               @click="deleteUserPermission(props.row, $event)">
       <DeleteIcon class="form-icon" />
     </b-button>
@@ -42,6 +43,9 @@ export default {
           serverName: () => this.$t('formLabelServer'),
           userType: () => this.$t('tableColumnUserType'),
           delete: () => this.$t('actionDelete')
+        },
+        columnsClasses: {
+          delete: 'py-0 align-middle'
         },
         sortable: ['systemName', 'serverName', 'userType'],
         filterable: ['systemName', 'serverName', 'userType']

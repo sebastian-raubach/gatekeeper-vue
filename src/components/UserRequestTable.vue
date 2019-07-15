@@ -58,6 +58,9 @@ export default {
           createdOn: this.$t('tableColumnRequestsOnDate'),
           actions: ''
         },
+        columnsClasses: {
+          actions: 'py-0 align-middle'
+        },
         sortable: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address', 'databaseSystemName', 'databaseServerName', 'createdOn'],
         filterable: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address', 'databaseSystemName', 'databaseServerName', 'createdOn']
       }
