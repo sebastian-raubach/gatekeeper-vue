@@ -72,6 +72,9 @@ export default {
     apiGetUser: function (userId, onSuccess, onError) {
       return this.authAjax({ url: 'user/' + userId, method: 'GET', success: onSuccess, error: onError })
     },
+    apiPostUser: function (user, onSuccess, onError) {
+      return this.authAjax({ url: 'user', method: 'POST', data: user, success: onSuccess, error: onError })
+    },
     apiDeleteUser: function (userId, onSuccess, onError) {
       return this.authAjax({ url: 'user/' + userId, method: 'DELETE', success: onSuccess, error: onError })
     },
@@ -113,6 +116,17 @@ export default {
     },
     apiDeleteUserPermission: function (permission, onSuccess, onError) {
       return this.authAjax({ url: 'user/' + permission.userId + '/permission', method: 'DELETE', data: permission, success: onSuccess, error: onError })
+    },
+    // INSTITUTIONS
+    apiGetInstitutions: function (onSuccess, onError) {
+      var data = {
+        page: 0,
+        limit: Number.MAX_SAFE_INTEGER
+      }
+      return this.authAjax({ url: 'institution', method: 'GET', data: data, success: onSuccess, error: onError })
+    },
+    apiPostInstitution: function (institution, onSuccess, onError) {
+      return this.authAjax({ url: 'institution', method: 'POST', data: institution, success: onSuccess, error: onError })
     }
   }
 }

@@ -1,21 +1,29 @@
 <template>
-  <v-server-table :url="baseUrl + 'database'"
-                  :columns="columns"
-                  :options="options"
-                  ref="table"
-                  v-on:row-click="onDatabaseClicked($event)"
-                  class="hover-select-table">
-    <b-button variant="danger"
-              slot="delete"
-              slot-scope="props"
-              @click="deleteDatabase(props.row, $event)">
-      <DeleteIcon class="form-icon" />
-    </b-button>
-  </v-server-table>
+  <div>
+    <v-server-table :url="baseUrl + 'database'"
+                    :columns="columns"
+                    :options="options"
+                    ref="table"
+                    v-on:row-click="onDatabaseClicked($event)"
+                    class="hover-select-table table-with-actions">
+      <b-button variant="danger"
+                slot="delete"
+                slot-scope="props"
+                @click="deleteDatabase(props.row, $event)">
+        <DeleteIcon class="form-icon" />
+      </b-button>
+      <div slot="afterTable">
+        <b-button class="action" @click="$refs.addDatabaseModal.show()"><DatabasePlusIcon class="button-icon" /> {{ $t('actionAddDatabase') }}</b-button>
+      </div>
+    </v-server-table>
+    <AddDatabaseModal ref="addDatabaseModal" @databases-updated="$refs.table.refresh()" />
+  </div>
 </template>
 
 <script>
-import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import DatabasePlusIcon from 'vue-material-design-icons/DatabasePlus'
+import DeleteIcon from 'vue-material-design-icons/Delete'
+import AddDatabaseModal from './modal/AddDatabaseModal'
 import { EventBus } from '../event-bus.js'
 import I18nTable from './I18nTable'
 import { mapState } from 'vuex'
@@ -53,6 +61,8 @@ export default {
     ])
   },
   components: {
+    AddDatabaseModal,
+    DatabasePlusIcon,
     DeleteIcon
   },
   methods: {

@@ -173,3 +173,11 @@ body {
 .table-sort-down:before {
   content: '▼'
 }
+
+.table-with-actions .table {
+  margin-bottom: 0;
+}
+.table-with-actions .action {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}

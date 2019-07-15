@@ -34,29 +34,7 @@
               </b-input-group>
             </b-form-group>
 
-            <b-form-group>
-              <label for="new-password">{{ $t('formLabelNewPassword') }}</label>
-              <b-input-group>
-                <b-input-group-prepend is-text class="no-border-radius-bottom">
-                  <KeyPlusIcon class="form-icon" />
-                </b-input-group-prepend>
-                <b-form-input id="new-password" name="new-password" type="password" class="no-border-radius-bottom" v-model="password" @keyup="updateScore()" required />
-              </b-input-group>
-              <b-progress :value="percent" :max="100" height="5px" :variant="variant" class="password-score" id="progress"></b-progress>
-              <b-tooltip target="progress" placement="bottom">
-                {{ message }}
-              </b-tooltip>
-            </b-form-group>
-
-            <b-form-group>
-              <label for="new-password-confirm">{{ $t('formLabelNewPasswordConfirm') }}</label>
-              <b-input-group>
-                <b-input-group-prepend is-text>
-                  <KeyPlusIcon class="form-icon" />
-                </b-input-group-prepend>
-                <b-form-input id="new-password-confirm" name="new-password-confirm" type="password" v-model="passwordConfirm" @keyup="checkPasswordsSame()" required />
-              </b-input-group>
-            </b-form-group>
+            <PasswordInput ref="passwordInput" @change="update"/>
             <b-button :disabled="!canContinue" type="submit" variant="primary" class="float-right" slot="footer">{{ $t('actionUpdate') }}</b-button>
           </b-form>
         </b-card>
@@ -68,8 +46,8 @@
 <script>
 import { mapState } from 'vuex'
 import AtIcon from 'vue-material-design-icons/At.vue'
-import KeyPlusIcon from 'vue-material-design-icons/KeyPlus.vue'
 import KeyRemoveIcon from 'vue-material-design-icons/KeyRemove.vue'
+import PasswordInput from '../components/PasswordInput.vue'
 
 export default {
   data: function () {
@@ -77,12 +55,6 @@ export default {
       user: null,
       email: '',
       oldPassword: '',
-      password: '',
-      passwordConfirm: '',
-      score: 0,
-      percent: 1,
-      variant: 'danger',
-      message: '',
       canContinue: false
     }
   },
@@ -93,52 +65,24 @@ export default {
   },
   components: {
     AtIcon,
-    KeyPlusIcon,
-    KeyRemoveIcon
+    KeyRemoveIcon,
+    PasswordInput
   },
   methods: {
-    updateScore: function () {
-      this.score = this.$zxcvbn(this.password).score
-
-      switch (this.score) {
-        case 0:
-          this.percent = 1
-          this.variant = 'danger'
-          this.message = 'Your password is too guessable.'
-          break
-        case 1:
-          this.percent = 25
-          this.variant = 'danger'
-          this.message = 'Your password is very guessable.'
-          break
-        case 2:
-          this.percent = 50
-          this.variant = 'warning'
-          this.message = 'Your password is somewhat guessable.'
-          break
-        case 3:
-          this.percent = 75
-          this.variant = 'success'
-          this.message = 'Your password is safely unguessable.'
-          break
-        case 4:
-          this.percent = 100
-          this.variant = 'success'
-          this.message = 'Your password is very unguessable.'
-      }
-
-      this.checkPasswordsSame()
-    },
-    checkPasswordsSame: function () {
-      this.canContinue = this.password && this.passwordConfirm && this.password === this.passwordConfirm && this.score >= 2
+    update: function () {
+      this.canContinue = this.$refs.passwordInput.valid()
     },
     onPasswordChanged: function () {
       var vm = this
 
-      if (this.password && this.passwordConfirm && this.password === this.passwordConfirm && this.score >= 2) {
+      var password = this.$refs.passwordInput.getPassword()
+      var passwordConfirm = this.$refs.passwordInput.getPasswordConfirm()
+      var score = this.$refs.passwordInput.getScore()
+
+      if (password && passwordConfirm && password === passwordConfirm && score >= 2) {
         var update = {
           oldPassword: this.oldPassword,
-          newPassword: this.password
+          newPassword: password
         }
 
         this.apiPatchUserPassword(this.token.id, update, function (result) {
@@ -207,12 +151,4 @@ export default {
 </script>
 
 <style>
-  .password-score {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-  .no-border-radius-bottom .input-group-text {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
 </style>

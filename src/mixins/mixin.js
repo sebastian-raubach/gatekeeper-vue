@@ -39,7 +39,9 @@ export default {
           break
         case 403:
           message = this.$t('httpErrorFourOThree')
-          break
+          this.$store.dispatch('ON_TOKEN_CHANGED', null)
+          this.$router.push('/gk/login')
+          return
         case 404:
           message = this.$t('httpErrorFourOFour')
           break
