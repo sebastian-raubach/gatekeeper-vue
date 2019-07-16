@@ -2,7 +2,7 @@
   <b-container fluid class="mt-3">
     <b-row>
       <b-col xs=12>
-        <h1>Databases</h1>
+        <h1>{{ $t('pageDatabasesHeading') }}</h1>
         <DatabaseTable />
       </b-col>
     </b-row>

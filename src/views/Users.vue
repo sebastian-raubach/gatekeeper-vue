@@ -12,7 +12,7 @@
               <dt>{{ $t('tableColumnUsername') }}</dt><dd>{{ user.username }}</dd>
               <dt>{{ $t('tableColumnFullName') }}</dt><dd>{{ user.fullName }}</dd>
               <dt>{{ $t('tableColumnEmail') }}</dt><dd>{{ user.emailAddress }}</dd>
-              <dt>{{ $t('tableColumnInstitute') }}</dt><dd>{{ user.name + ' (' + user.acronym + ') ' + user.address}}</dd>
+              <dt>{{ $t('tableColumnInstitute') }}</dt><dd>{{ getInstitution() }}</dd>
             </dl>
           </b-card>
         </b-col>
@@ -144,6 +144,24 @@ export default {
     UserPermissionTable
   },
   methods: {
+    getInstitution: function () {
+      var result = ''
+
+      if (this.user.name) {
+        result += this.user.name
+      }
+      if (this.user.acronym) {
+        result += ' (' + this.user.acronym + ')'
+      }
+      if (this.user.address) {
+        result += ' - ' + this.user.address
+      }
+      if (result.length === 0) {
+        result = '-'
+      }
+
+      return result
+    },
     onUserSelected: function (user) {
       this.user = user
 

@@ -10,8 +10,6 @@ import { ClientTable, ServerTable } from 'vue-tables-2'
 import { i18n } from './plugins/i18n.js'
 import FlagIcon from 'vue-flag-icon'
 
-Vue.use(FlagIcon)
-
 var tableOptions = {
   pagination: {
     nav: 'scroll',
@@ -24,18 +22,12 @@ var tableOptions = {
   }
 }
 
-Vue.use(ClientTable, tableOptions, false, 'bootstrap4', 'default')
-Vue.use(ServerTable, tableOptions, false, 'bootstrap4', 'default')
-
 Vue.mixin(mixin)
 Vue.mixin(api)
-
-// Set base URL based on environment
-var baseUrl = 'http://localhost:8080/gatekeeper/v3.6.0/api/'
-
-store.commit('ON_BASE_URL_CHANGED_MUTATION', baseUrl)
-
-// Make sure jQuery is available
+Vue.use(ClientTable, tableOptions, false, 'bootstrap4', 'default')
+Vue.use(ServerTable, tableOptions, false, 'bootstrap4', 'default')
+Vue.use(FlagIcon)
+Vue.use(BootstrapVue)
 Vue.use({
   install: function (Vue) {
     Vue.prototype.$jQuery = require('jquery')
@@ -46,14 +38,20 @@ Vue.use({
     window.moment = Vue.prototype.$moment
   }
 })
-
-Vue.use(BootstrapVue)
-
-Vue.config.productionTip = false
-
 Vue.filter('toDate', function (value) {
   return window.moment(value).format(window.moment.localeData().longDateFormat('L'))
 })
+
+// Set base URL
+var baseUrl = 'http://localhost:8080/gatekeeper/v3.6.0/api/'
+
+if (process.env.VUE_APP_BASE_URL) {
+  baseUrl = process.env.VUE_APP_BASE_URL
+}
+
+store.commit('ON_BASE_URL_CHANGED_MUTATION', baseUrl)
+
+Vue.config.productionTip = false
 
 new Vue({
   router: router,

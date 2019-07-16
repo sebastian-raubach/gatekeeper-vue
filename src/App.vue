@@ -82,9 +82,12 @@ export default {
         // If it's successful, delete token, then redirect
         vm.$store.dispatch('ON_TOKEN_CHANGED', null)
         vm.$router.push('/gk/login')
-      }, function () {
-        // If they're wrong, remove
-        vm.$store.dispatch('ON_TOKEN_CHANGED', null)
+      }, {
+        codes: [],
+        callback: function () {
+          // If they're wrong, remove
+          vm.$store.dispatch('ON_TOKEN_CHANGED', null)
+        }
       })
     }
   },
