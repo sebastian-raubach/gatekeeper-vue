@@ -7,17 +7,17 @@
       <b-row class="about-logos d-flex flex-wrap align-items-center">
         <b-col xs=12 md=4>
           <a href="https://ics.hutton.ac.uk/get-germinate/" target="_blank">
-            <b-img src="/germinate.svg" class="align-middle" />
+            <b-img src="./germinate-square.svg" class="align-middle" />
           </a>
         </b-col>
         <b-col xs=12 md=4>
           <a href="http://www.hutton.ac.uk/" target="_blank">
-            <b-img src="/jhi.svg" class="align-middle" />
+            <b-img src="./jhi.svg" class="align-middle" />
           </a>
         </b-col>
         <b-col xs=12 md=4>
           <a href="https://ics.hutton.ac.uk/" target="_blank">
-            <b-img src="/ics.svg" class="align-middle" />
+            <b-img src="./ics.svg" class="align-middle" />
           </a>
         </b-col>
       </b-row>
@@ -43,7 +43,7 @@ export default {
   }
   .about-logos > div img {
     width: 100%;
-    max-width: 400px;
+    max-height: 150px;
     height: auto;
   }
 </style>

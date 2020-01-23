@@ -1,11 +1,11 @@
 <template>
   <div>
     <b-navbar type="dark" variant="dark" fixed="top" class="flex-md-nowrap p-0 shadow">
-      <b-navbar-brand class="col-md-3 col-lg-2 mr-0" to="/">
-        <b-img src="/gatekeeper-dark.svg" height=35 />
+      <b-navbar-brand class="col-md-3 col-lg-2 mr-0 text-center" to="/">
+        <b-img src="./gatekeeper-square.svg" height=50 />
       </b-navbar-brand>
       <b-navbar-nav class="ml-auto mr-2">
-        <b-nav-item :to="token ? '/about' : '/gk/about'">About</b-nav-item>
+        <b-nav-item :to="token ? '/about' : '/gk/about'">{{ $t('navbarActionAbout') }}</b-nav-item>
         <b-nav-item-dropdown text="Lang" right>
           <template slot="button-content"><TranslateIcon class="form-icon" /></template>
           <b-dropdown-item v-for="language in languages" :key="language.locale" @click="onLocaleChanged(language)"><flag :squared="false" :iso="language.flag" class="flag-icon" /> {{ language.name }}</b-dropdown-item>
