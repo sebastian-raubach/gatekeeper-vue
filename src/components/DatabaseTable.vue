@@ -42,7 +42,7 @@ export default {
           })
         },
         responseAdapter: function (data) {
-          return data
+          return data.data
         },
         perPage: 10,
         headings: {

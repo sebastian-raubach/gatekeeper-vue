@@ -9,6 +9,7 @@ import api from './mixins/api.js'
 import { ClientTable, ServerTable } from 'vue-tables-2'
 import { i18n } from './plugins/i18n.js'
 import FlagIcon from 'vue-flag-icon'
+let axiosDefaults = require('axios/lib/defaults')
 
 var tableOptions = {
   pagination: {
@@ -43,11 +44,13 @@ Vue.filter('toDate', function (value) {
 })
 
 // Set base URL
-var baseUrl = 'http://localhost:8080/gatekeeper/v3.6.0/api/'
+var baseUrl = 'http://localhost:8080/gatekeeper/v4.0.0/api/'
 
 if (process.env.VUE_APP_BASE_URL) {
   baseUrl = process.env.VUE_APP_BASE_URL
 }
+
+axiosDefaults.baseURL = baseUrl
 
 store.commit('ON_BASE_URL_CHANGED_MUTATION', baseUrl)
 

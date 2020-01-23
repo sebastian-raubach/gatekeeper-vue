@@ -36,7 +36,7 @@ export default {
           })
         },
         responseAdapter: function (data) {
-          return data
+          return data.data
         },
         rowClassCallback: (row) => {
           return (this.user && row.id === this.user.id) ? 'table-primary' : ''
