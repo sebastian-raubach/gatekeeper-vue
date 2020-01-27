@@ -2,7 +2,7 @@
   <div>
     <main class="container container-fluid">
       <b-form class="form-signin" @submit.prevent="checkCreds">
-        <b-img src="../gatekeeper-square.svg" fluid class="mb-3 mt-5 px-5" />
+        <b-img src="./gatekeeper-square.svg" fluid class="mb-3 mt-5 px-5" />
         <h1 class="text-center">Germinate Gatekeeper</h1>
         <h1 class="h3 my-3 font-weight-normal">{{ $t('pageLoginHeading') }}</h1>
         <label for="inputUsername" class="sr-only">{{ $t('formLabelUsername') }}</label>
