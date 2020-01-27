@@ -7,6 +7,14 @@
             slot-scope="props">
         {{ props.row.createdOn | toDate }}
       </span>
+      <div slot="activationKey" slot-scope="props">
+        <span v-b-tooltip:hover :title="$t('tooltipEmailActivationAwaiting')" v-if="props.row.activationKey && props.row.activationKey.length > 0">
+          <TimerSandIcon class="text-danger" />
+        </span>
+        <span v-b-tooltip:hover :title="$t('tooltipEmailActivationSuccessful')" v-else>
+          <EmailCheckOutlineIcon class="text-success" />
+        </span>
+      </div>
       <b-button-group slot="actions" slot-scope="props">
         <b-button size="sm"
                   v-b-tooltip.hover
@@ -37,13 +45,15 @@
 import DeleteIcon from 'vue-material-design-icons/Delete'
 import ThumbDownIcon from 'vue-material-design-icons/ThumbDown'
 import ThumbUpIcon from 'vue-material-design-icons/ThumbUp'
+import EmailCheckOutlineIcon from 'vue-material-design-icons/EmailCheckOutline'
+import TimerSandIcon from 'vue-material-design-icons/TimerSand'
 import I18nTable from './I18nTable'
 
 export default {
   extends: I18nTable,
   data: function () {
     return {
-      columns: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address', 'databaseSystemName', 'databaseServerName', 'createdOn', 'actions'],
+      columns: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address', 'databaseSystemName', 'databaseServerName', 'activationKey', 'createdOn', 'actions'],
       options: {
         perPage: 10,
         headings: {
@@ -55,14 +65,15 @@ export default {
           address: () => this.$t('tableColumnInstituteAddress'),
           databaseSystemName: () => this.$t('tableColumnRequestsAccessTo'),
           databaseServerName: () => this.$t('tableColumnRequestsOnServer'),
+          activationKey: () => this.$t('tableColumnRequestsActivationKey'),
           createdOn: this.$t('tableColumnRequestsOnDate'),
           actions: ''
         },
         columnsClasses: {
           actions: 'py-0 align-middle'
         },
-        sortable: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address', 'databaseSystemName', 'databaseServerName', 'createdOn'],
-        filterable: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address', 'databaseSystemName', 'databaseServerName', 'createdOn']
+        sortable: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address', 'databaseSystemName', 'databaseServerName', 'activationKey', 'createdOn'],
+        filterable: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address', 'databaseSystemName', 'databaseServerName', 'activationKey', 'createdOn']
       }
     }
   },
@@ -79,8 +90,10 @@ export default {
   },
   components: {
     DeleteIcon,
+    EmailCheckOutlineIcon,
     ThumbDownIcon,
-    ThumbUpIcon
+    ThumbUpIcon,
+    TimerSandIcon
   },
   methods: {
     onAction: function (decision, row) {

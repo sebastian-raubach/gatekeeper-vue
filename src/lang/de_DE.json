@@ -109,9 +109,12 @@
   "tableColumnInstituteAddress": "Institutsadresse",
   "tableColumnUserType": "Benutzertyp",
   "tableColumnRequestsAccessTo": "Fragt nach Zugriff auf",
+  "tableColumnRequestsActivationKey": "Email-Aktivierung",
   "tableColumnRequestsOnServer": "Auf Server",
   "tableColumnRequestsOnDate": "An Datum",
   "toastDeletedSuccessfully": "Erfolgreich gelöscht",
   "toastPasswordResetSuccessful": "Ein neues Passwort wurde verschickt",
+  "tooltipEmailActivationAwaiting": "Warte auf Email-Bestätigung",
+  "tooltipEmailActivationSuccessful": "Email bestätigt",
   "widgetFooterCookiePolicy": "Cookie-Richtlinien"
 }
