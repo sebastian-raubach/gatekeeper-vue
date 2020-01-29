@@ -33,6 +33,7 @@ export default {
   extends: I18nTable,
   data: function () {
     return {
+      database: null,
       columns: ['systemName', 'serverName', 'description', 'delete'],
       options: {
         requestFunction: function (data) {
@@ -40,6 +41,9 @@ export default {
           return this.apiGetDatabases(data, function (result) {
             vm.dispatch('success', result)
           })
+        },
+        rowClassCallback: (row) => {
+          return (this.database && row.id === this.database.id) ? 'table-primary' : ''
         },
         responseAdapter: function (data) {
           return data.data
@@ -99,7 +103,9 @@ export default {
         })
     },
     onDatabaseClicked: function (event) {
-      console.log(event)
+      this.database = event.row
+
+      this.$emit('database-selected', this.database)
     }
   }
 }

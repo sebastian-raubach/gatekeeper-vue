@@ -62,7 +62,7 @@ export default {
         activationKey: activationKey,
         locale: store.getters.locale
       }
-      return this.unauthAjax({ url: 'request/activation', data: data, method: 'POST', success: onSuccess, error: onError })
+      return this.authAjax({ url: 'request/activation', data: data, method: 'POST', success: onSuccess, error: onError })
     },
     // USERS
     apiGetUsers: function (queryData, onSuccess, onError) {
@@ -90,7 +90,7 @@ export default {
     },
     apiPostPasswordReset: function (resetRequest, onSuccess, onError) {
       resetRequest['locale'] = store.getters.locale
-      return this.unauthAjax({ url: 'passwordreset', method: 'POST', data: resetRequest, success: onSuccess, error: onError })
+      return this.authAjax({ url: 'passwordreset', method: 'POST', data: resetRequest, success: onSuccess, error: onError })
     },
     // DATABASES
     apiGetDatabases: function (queryData, onSuccess, onError) {
@@ -107,6 +107,10 @@ export default {
     apiGetUserPermissions: function (userId, queryData, onSuccess, onError) {
       queryData.page -= 1
       return this.authAjax({ url: 'user/' + userId + '/permission', method: 'GET', data: queryData, success: onSuccess, error: onError })
+    },
+    apiGetDatabasePermissions: function (databaseId, queryData, onSuccess, onError) {
+      queryData.page -= 1
+      return this.authAjax({ url: `database/${databaseId}/permission`, method: 'GET', data: queryData, success: onSuccess, error: onError })
     },
     apiPatchUserPermission: function (permission, onSuccess, onError) {
       return this.authAjax({ url: 'user/' + permission.userId + '/permission', method: 'PATCH', data: permission, success: onSuccess, error: onError })
