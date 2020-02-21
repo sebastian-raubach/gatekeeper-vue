@@ -1,7 +1,15 @@
 {
   "name": "gatekeeper",
-  "version": "0.1.0",
-  "private": true,
+  "version": "4.0.0",
+  "description": "",
+  "author": "Sebastian Raubach",
+  "homepage": "https://ics.hutton.ac.uk/get-germinate",
+  "copyright": "Copyright 2019 The James Hutton Institute",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sebastian-raubach/gatekeeper-vue.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
