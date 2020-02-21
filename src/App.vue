@@ -31,6 +31,11 @@
         </b-button>
       </template>
     </b-modal>
+    <b-modal ref="loadingModal" :title="$t('modalTitleLoading')" hide-footer no-close-on-backdrop no-close-on-esc hide-header-close>
+      <div class="text-center">
+        <b-spinner style="width: 3rem; height: 3rem;" variant="primary" type="grow" />
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -38,6 +43,7 @@
 import LogoutVariantIcon from 'vue-material-design-icons/LogoutVariant'
 import TranslateIcon from 'vue-material-design-icons/Translate'
 import { mapState } from 'vuex'
+import { EventBus } from './event-bus.js'
 
 export default {
   name: 'app',
@@ -89,10 +95,22 @@ export default {
           vm.$store.dispatch('ON_TOKEN_CHANGED', null)
         }
       })
+    },
+    toggleLoading: function (show) {
+      if (show) {
+        this.$refs.loadingModal.show()
+      } else {
+        this.$refs.loadingModal.hide()
+      }
     }
+  },
+  destroyed: function () {
+    EventBus.$off('show-loading', this.toggleLoading)
   },
   mounted: function () {
     var vm = this
+
+    EventBus.$on('show-loading', this.toggleLoading)
 
     if (this.locale) {
       this.$i18n.locale = this.languages.map(function (l) {

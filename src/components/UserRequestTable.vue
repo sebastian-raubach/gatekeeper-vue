@@ -1,8 +1,9 @@
 <template>
-  <v-client-table :data="data"
-                  :columns="columns"
-                  :options="options"
-                  ref="table" >
+  <div>
+    <v-client-table :data="data"
+                    :columns="columns"
+                    :options="options"
+                    ref="table" >
       <span slot="createdOn"
             slot-scope="props">
         {{ props.row.createdOn | toDate }}
@@ -39,6 +40,12 @@
         </b-button>
       </b-button-group>
     </v-client-table>
+    <b-modal ref="feedbackModal" @ok="onReject(null)" :ok-title="$t('actionReject')" ok-variant="danger" :cancel-title="$t('actionCancel')" :title="$t('modalTitleRejection')" v-if="currentRow">
+      <b-form @submit.prevent="onReject(null)">
+        <b-textarea rows="5" :placeholder="$t('modalTextRejection')" v-model="rejectionReason" />
+      </b-form>
+    </b-modal>
+  </div>
 </template>
 
 <script>
@@ -48,6 +55,7 @@ import ThumbUpIcon from 'vue-material-design-icons/ThumbUp'
 import EmailCheckOutlineIcon from 'vue-material-design-icons/EmailCheckOutline'
 import TimerSandIcon from 'vue-material-design-icons/TimerSand'
 import I18nTable from './I18nTable'
+import { EventBus } from '../event-bus.js'
 
 export default {
   extends: I18nTable,
@@ -74,7 +82,9 @@ export default {
         },
         sortable: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address', 'databaseSystemName', 'databaseServerName', 'activationKey', 'createdOn'],
         filterable: ['username', 'fullName', 'emailAddress', 'name', 'acronym', 'address', 'databaseSystemName', 'databaseServerName', 'activationKey', 'createdOn']
-      }
+      },
+      currentRow: null,
+      rejectionReason: null
     }
   },
   props: {
@@ -110,10 +120,35 @@ export default {
       }
     },
     onReject: function (row) {
-      // TODO: implement. Ask admin for feedback to send to client
+      if (row) {
+        this.currentRow = row
+        this.$nextTick(() => this.$refs.feedbackModal.show())
+      } else {
+        EventBus.$emit('show-loading', true)
+        var decision = {
+          requestId: this.currentRow.id,
+          decision: 'REJECT',
+          feedback: this.rejectionReason
+        }
+
+        if (this.requestType === 'new') {
+          this.apiPostDecisionNewRequests(this.currentRow.id, decision, result => {
+            this.refresh()
+            EventBus.$emit('show-loading', false)
+          })
+        } else if (this.requestType === 'existing') {
+          this.apiPostDecisionExistingRequests(this.currentRow.id, decision, result => {
+            this.refresh()
+            EventBus.$emit('show-loading', false)
+          })
+        }
+        this.currentRow = null
+      }
+
+      this.rejectionReason = null
     },
     onApprove: function (row) {
-      var vm = this
+      EventBus.$emit('show-loading', true)
       this.$bvModal.msgBoxConfirm(this.$t('modalMessageSure'), {
         okTitle: this.$t('genericYes'),
         okVariant: 'danger',
@@ -126,20 +161,22 @@ export default {
               decision: 'APPROVE'
             }
 
-            if (vm.requestType === 'new') {
-              vm.apiPostDecisionNewRequests(row.id, decision, function (result) {
-                vm.refresh()
+            if (this.requestType === 'new') {
+              this.apiPostDecisionNewRequests(row.id, decision, result => {
+                this.refresh()
+                EventBus.$emit('show-loading', false)
               })
-            } else if (vm.requestType === 'existing') {
-              vm.apiPostDecisionExistingRequests(row.id, decision, function (result) {
-                vm.refresh()
+            } else if (this.requestType === 'existing') {
+              this.apiPostDecisionExistingRequests(row.id, decision, result => {
+                this.refresh()
+                EventBus.$emit('show-loading', false)
               })
             }
           }
         })
     },
     onDelete: function (row) {
-      var vm = this
+      EventBus.$emit('show-loading', true)
       this.$bvModal.msgBoxConfirm(this.$t('modalMessageSure'), {
         okTitle: this.$t('genericYes'),
         okVariant: 'danger',
@@ -147,13 +184,15 @@ export default {
       })
         .then(value => {
           if (value) {
-            if (vm.requestType === 'new') {
-              vm.apiDeleteRequestNew(row.id, function (result) {
-                vm.refresh()
+            if (this.requestType === 'new') {
+              this.apiDeleteRequestNew(row.id, result => {
+                this.refresh()
+                EventBus.$emit('show-loading', false)
               })
-            } else if (vm.requestType === 'existing') {
-              vm.apiDeleteRequestExisting(row.id, function (result) {
-                vm.refresh()
+            } else if (this.requestType === 'existing') {
+              this.apiDeleteRequestExisting(row.id, result => {
+                this.refresh()
+                EventBus.$emit('show-loading', false)
               })
             }
           }

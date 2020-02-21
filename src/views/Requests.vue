@@ -36,15 +36,13 @@ export default {
   },
   methods: {
     updateNewRequests: function () {
-      var vm = this
-      this.apiGetNewRequests(function (result) {
-        vm.newRequestData = result
+      this.apiGetNewRequests(result => {
+        this.newRequestData = result
       })
     },
     updateExistingRequests: function () {
-      var vm = this
-      this.apiGetExistingRequests(function (result) {
-        vm.existingRequestData = result
+      this.apiGetExistingRequests(result => {
+        this.existingRequestData = result
       })
     }
   },
