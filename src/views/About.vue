@@ -28,7 +28,7 @@
 <script>
 export default {
   mounted: function () {
-    window.$('#banner').huttonBanner()
+    window.jQuery('#banner').huttonBanner()
   }
 }
 </script>

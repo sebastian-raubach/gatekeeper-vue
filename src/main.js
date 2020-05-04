@@ -31,8 +31,6 @@ Vue.use(FlagIcon)
 Vue.use(BootstrapVue)
 Vue.use({
   install: function (Vue) {
-    Vue.prototype.$jQuery = require('jquery')
-    window.jQuery = Vue.prototype.$jQuery
     Vue.prototype.$zxcvbn = require('zxcvbn')
     window.zxcvbn = Vue.prototype.$zxcvbn
     Vue.prototype.$moment = require('moment')
