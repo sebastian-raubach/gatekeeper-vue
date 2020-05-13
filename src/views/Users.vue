@@ -132,7 +132,7 @@ export default {
         description: null,
         userType: 'Regular User'
       },
-      userTypeOptions: ['Administrator', 'Regular User', 'Suspended User']
+      userTypeOptions: ['Administrator', 'Data Curator', 'Regular User', 'Suspended User']
     }
   },
   components: {

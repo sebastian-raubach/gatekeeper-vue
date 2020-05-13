@@ -49,7 +49,7 @@ export default {
         sortable: ['username', 'userType'],
         filterable: ['username', 'userType']
       },
-      userTypeOptions: ['Administrator', 'Regular User', 'Suspended User']
+      userTypeOptions: ['Administrator', 'Data Curator', 'Regular User', 'Suspended User']
     }
   },
   props: {

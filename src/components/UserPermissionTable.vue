@@ -50,7 +50,7 @@ export default {
         sortable: ['systemName', 'serverName', 'userType'],
         filterable: ['systemName', 'serverName', 'userType']
       },
-      userTypeOptions: ['Administrator', 'Regular User', 'Suspended User']
+      userTypeOptions: ['Administrator', 'Data Curator', 'Regular User', 'Suspended User']
     }
   },
   props: {

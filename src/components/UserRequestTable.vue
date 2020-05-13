@@ -107,17 +107,26 @@ export default {
   },
   methods: {
     onAction: function (decision, row) {
-      switch (decision) {
-        case 'delete':
-          this.onDelete(row)
-          break
-        case 'reject':
-          this.onReject(row)
-          break
-        case 'approve':
-          this.onApprove(row)
-          break
-      }
+      this.$bvModal.msgBoxConfirm(this.$t('modalMessageSure'), {
+        okTitle: this.$t('genericYes'),
+        okVariant: 'danger',
+        cancelTitle: this.$t('genericNo')
+      })
+        .then(value => {
+          if (value) {
+            switch (decision) {
+              case 'delete':
+                this.onDelete(row)
+                break
+              case 'reject':
+                this.onReject(row)
+                break
+              case 'approve':
+                this.onApprove(row)
+                break
+            }
+          }
+        })
     },
     onReject: function (row) {
       if (row) {
@@ -149,56 +158,38 @@ export default {
     },
     onApprove: function (row) {
       EventBus.$emit('show-loading', true)
-      this.$bvModal.msgBoxConfirm(this.$t('modalMessageSure'), {
-        okTitle: this.$t('genericYes'),
-        okVariant: 'danger',
-        cancelTitle: this.$t('genericNo')
-      })
-        .then(value => {
-          if (value) {
-            var decision = {
-              requestId: row.id,
-              decision: 'APPROVE'
-            }
+      var decision = {
+        requestId: row.id,
+        decision: 'APPROVE'
+      }
 
-            if (this.requestType === 'new') {
-              this.apiPostDecisionNewRequests(row.id, decision, result => {
-                this.refresh()
-                EventBus.$emit('show-loading', false)
-              })
-            } else if (this.requestType === 'existing') {
-              this.apiPostDecisionExistingRequests(row.id, decision, result => {
-                this.refresh()
-                EventBus.$emit('show-loading', false)
-              })
-            }
-          }
+      if (this.requestType === 'new') {
+        this.apiPostDecisionNewRequests(row.id, decision, result => {
+          this.refresh()
+          EventBus.$emit('show-loading', false)
         })
+      } else if (this.requestType === 'existing') {
+        this.apiPostDecisionExistingRequests(row.id, decision, result => {
+          this.refresh()
+          EventBus.$emit('show-loading', false)
+        })
+      }
     },
     onDelete: function (row) {
-      EventBus.$emit('show-loading', true)
-      this.$bvModal.msgBoxConfirm(this.$t('modalMessageSure'), {
-        okTitle: this.$t('genericYes'),
-        okVariant: 'danger',
-        cancelTitle: this.$t('genericNo')
-      })
-        .then(value => {
-          if (value) {
-            if (this.requestType === 'new') {
-              this.apiDeleteRequestNew(row.id, result => {
-                this.refresh()
-                EventBus.$emit('show-loading', false)
-              })
-            } else if (this.requestType === 'existing') {
-              this.apiDeleteRequestExisting(row.id, result => {
-                this.refresh()
-                EventBus.$emit('show-loading', false)
-              })
-            }
-          }
+      if (this.requestType === 'new') {
+        this.apiDeleteRequestNew(row.id, result => {
+          this.refresh()
+          EventBus.$emit('show-loading', false)
         })
+      } else if (this.requestType === 'existing') {
+        this.apiDeleteRequestExisting(row.id, result => {
+          this.refresh()
+          EventBus.$emit('show-loading', false)
+        })
+      }
     },
     refresh: function () {
+      EventBus.$emit('stats-count-changed')
       this.$emit('request-data')
     }
   }

@@ -8,15 +8,6 @@
            @ok="onSubmitNewUser" >
     <b-form @submit.prevent="onSubmitNewUser" autocomplete="off" ref="form" :class="validated ? 'was-validated' : 'needs-validation'" >
       <b-form-group>
-        <label for="username">{{ $t('formLabelUsername') }}</label>
-        <b-input-group>
-          <b-input-group-prepend is-text>
-            <AccountIcon class="form-icon" />
-          </b-input-group-prepend>
-          <b-form-input id="username" name="username" autocomplete="off" v-model="user.username" required @keyup="checkForm" />
-        </b-input-group>
-      </b-form-group>
-      <b-form-group>
         <label for="emailAddress">{{ $t('formLabelEmail') }}</label>
         <b-input-group>
           <b-input-group-prepend is-text>
@@ -58,7 +49,6 @@
 </template>
 
 <script>
-import AccountIcon from 'vue-material-design-icons/Account'
 import AtIcon from 'vue-material-design-icons/At'
 import OfficeBuildingIcon from 'vue-material-design-icons/OfficeBuilding'
 import PasswordInput from '../PasswordInput'
@@ -83,7 +73,6 @@ export default {
     }
   },
   components: {
-    AccountIcon,
     AtIcon,
     OfficeBuildingIcon,
     PasswordInput,
@@ -118,7 +107,6 @@ export default {
     checkForm: function () {
       var result = true
       result = result && this.$refs.password.valid()
-      result = result && this.user.username
       result = result && this.user.fullName
       result = result && this.user.institutionId
       result = result && this.user.emailAddress
@@ -133,6 +121,8 @@ export default {
       }
 
       delete this.user.passwordConfirm
+
+      this.user.username = this.user.emailAddress
 
       var vm = this
       this.apiPostUser(this.user, function (result) {

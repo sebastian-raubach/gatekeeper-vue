@@ -5,7 +5,7 @@ export default {
     var token = store.getters.token
     return token && this.tokenStillValid()
   },
-  tokenStillValid() {
+  tokenStillValid () {
     var token = store.getters.token
     if (token) {
       return new Date().getTime() - token.createdOn <= token.lifetime
