@@ -5,7 +5,9 @@ LABEL maintainer="sebastian.raubach@hutton.ac.uk"
 COPY qemu-arm-static /usr/bin/qemu-arm-static
 
 # Clone the Gatekeeper server code and client code
-RUN git clone https://github.com/germinateplatform/gatekeeper-server.git /opt/gatekeeper-server && \
+RUN apt-get update && \
+    apt-get install -y git && \
+    git clone https://github.com/germinateplatform/gatekeeper-server.git /opt/gatekeeper-server && \
     git clone https://github.com/germinateplatform/gatekeeper-vue.git /opt/gatekeeper-client
 
 # Install node.js
