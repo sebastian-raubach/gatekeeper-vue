@@ -31,6 +31,7 @@
         <b-form-group :label="$t('formLabelEmail')" label-for="inputEmail" :invalid-feedback="$t('formFeedbackEmailRequired')">
           <b-form-input id="inputEmail" name="email" :placeholder="$t('formLabelEmail')" type="email" required v-model="reset.email" :state="formError ? 'invalid' : null"/>
         </b-form-group>
+        <p class="text-info">{{ $t('modalMessageResetPassword') }}</p>
         <p class="text-danger" v-if="formError">{{ formError }} </p>
       </b-form>
     </b-modal>
@@ -38,6 +39,8 @@
 </template>
 
 <script>
+import { EventBus } from '@/event-bus.js'
+
 export default {
   data: function () {
     return {
@@ -46,7 +49,6 @@ export default {
         password: null
       },
       reset: {
-        username: null,
         email: null
       },
       formValidated: false,
@@ -63,41 +65,42 @@ export default {
       return this.$refs.resetForm.checkValidity()
     },
     onPasswordReset: function () {
-      var vm = this
-
       if (this.checkFormValidity()) {
         this.formError = null
 
         this.resetInProgress = true
-        this.apiPostPasswordReset(this.reset, function (result) {
+        EventBus.$emit('show-loading', true)
+        this.apiPostPasswordReset(this.reset, result => {
+          EventBus.$emit('show-loading', false)
           if (result === true) {
-            vm.$bvToast.toast(vm.$t('toastPasswordResetSuccessful'), {
-              title: vm.$t('genericSuccess'),
+            this.$bvToast.toast(this.$t('toastPasswordResetSuccessful'), {
+              title: this.$t('genericSuccess'),
               variant: 'success',
               autoHideDelay: 5000,
               appendToast: true
             })
           } else {
-            vm.$bvToast.toast(vm.$t('errorMessageUnknownServerError'), {
-              title: vm.$t('genericError'),
+            this.$bvToast.toast(this.$t('errorMessageUnknownServerError'), {
+              title: this.$t('genericError'),
               variant: 'danger',
               autoHideDelay: 5000,
               appendToast: true
             })
           }
-          vm.$refs.resetModal.hide()
-          vm.resetInProgress = false
+          this.$refs.resetModal.hide()
+          this.resetInProgress = false
         }, {
           codes: [],
-          callback: function (err) {
-            vm.formValidated = false
+          callback: err => {
+            EventBus.$emit('show-loading', false)
+            this.formValidated = false
             if (err) {
               if (err.status === 400) {
-                vm.formError = vm.$t('errorMessageInvalidEmailUsername')
+                this.formError = this.$t('errorMessageInvalidEmailUsername')
               } else if (err.status === 503) {
-                vm.formError = vm.$t('errorMessageEmailUnavailable')
+                this.formError = this.$t('errorMessageEmailUnavailable')
               } else {
-                vm.formError = vm.$t('errorMessageUnknownServerError')
+                this.formError = this.$t('errorMessageUnknownServerError')
               }
             }
           }

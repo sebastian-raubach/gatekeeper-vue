@@ -47,7 +47,8 @@
 import { mapState } from 'vuex'
 import AtIcon from 'vue-material-design-icons/At.vue'
 import KeyRemoveIcon from 'vue-material-design-icons/KeyRemove.vue'
-import PasswordInput from '../components/PasswordInput.vue'
+import PasswordInput from '@/components/PasswordInput.vue'
+import { EventBus } from '@/event-bus.js'
 
 export default {
   data: function () {
@@ -84,8 +85,9 @@ export default {
           oldPassword: this.oldPassword,
           newPassword: password
         }
-
+        EventBus.$emit('show-loading', true)
         this.apiPatchUserPassword(this.token.id, update, function (result) {
+          EventBus.$emit('show-loading', false)
           if (result === true) {
             vm.$bvToast.toast('Update successful.', {
               title: 'Password',
@@ -101,6 +103,7 @@ export default {
         }, {
           codes: [401],
           callback: function (err) {
+            EventBus.$emit('show-loading', false)
             if (err.status === 401) {
               vm.$bvToast.toast('Update failed. Wrong password provided.', {
                 title: 'Password',

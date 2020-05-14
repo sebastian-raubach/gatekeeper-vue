@@ -68,7 +68,8 @@ export default {
         fullName: null,
         emailAddress: null,
         passwordConfirm: null,
-        institutionId: null
+        institutionId: null,
+        hasAccessToGatekeeper: 1
       }
     }
   },
@@ -87,17 +88,15 @@ export default {
       })
     },
     updateInstitutions: function () {
-      var vm = this
-      this.apiGetInstitutions(function (result) {
-        var mapped = result.data.map(function (i) {
+      this.apiGetInstitutions(result => {
+        var mapped = result.data.map(i => {
           return {
             value: i.id,
             text: i.name
           }
         })
-        vm.user.institutionId = mapped[0].value
-
-        vm.institutions = mapped
+        this.user.institutionId = mapped[0].value
+        this.institutions = mapped
       })
     },
     update: function () {
@@ -124,22 +123,24 @@ export default {
 
       this.user.username = this.user.emailAddress
 
-      var vm = this
-      this.apiPostUser(this.user, function (result) {
-        vm.$refs.addUserModal.hide()
-        vm.$emit('user-added')
+      this.apiPostUser(this.user, result => {
+        this.$refs.addUserModal.hide()
+        this.$emit('user-added')
         EventBus.$emit('stats-count-changed')
-        vm.resetUser()
+        this.resetUser()
       })
     },
     resetUser: function () {
+      this.validated = false
+      this.canContinue = false
       this.user = {
         username: null,
         password: null,
         fullName: null,
         emailAddress: null,
         passwordConfirm: null,
-        institutionId: null
+        institutionId: this.institutions && this.institutions.length > 0 ? this.institutions[0].value : null,
+        hasAccessToGatekeeper: 1
       }
     }
   },
