@@ -3,8 +3,8 @@ FROM tomcat:8-jdk8
 LABEL maintainer="sebastian.raubach@hutton.ac.uk"
 
 # Clone the Gatekeeper server code and client code
-RUN git clone https://github.com/sebastian-raubach/gatekeeper-server.git /opt/gatekeeper-server && \
-    git clone https://github.com/sebastian-raubach/gatekeeper-vue.git /opt/gatekeeper-client
+RUN git clone https://github.com/germinateplatform/gatekeeper-server.git /opt/gatekeeper-server && \
+    git clone https://github.com/germinateplatform/gatekeeper-vue.git /opt/gatekeeper-client
 
 # Install node.js
 RUN apt-get update && \
