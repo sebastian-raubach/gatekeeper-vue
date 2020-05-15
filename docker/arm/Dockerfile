@@ -28,7 +28,9 @@ RUN apt-get install -y build-essential && \
     cp -a /opt/gatekeeper-client/dist/. /opt/gatekeeper-server/client/
 
 # Download Gradle and build the server code
-RUN wget https://services.gradle.org/distributions/gradle-6.0.1-bin.zip -P /tmp/ && \
+RUN apt-get update && \
+    apt-get install -y wget openjdk-8-jdk && \
+    wget https://services.gradle.org/distributions/gradle-6.0.1-bin.zip -P /tmp/ && \
     unzip /tmp/gradle-6.0.1-bin.zip -d /opt/ && \
     echo "data.directory.external=/data/gatekeeper" > /opt/gatekeeper-server/config.properties && \
     echo "project.name=gatekeeper" >> /opt/gatekeeper-server/gradle.properties && \
