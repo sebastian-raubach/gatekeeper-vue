@@ -34,9 +34,15 @@ RUN apt-get update && \
     unzip /tmp/gradle-6.0.1-bin.zip -d /opt/ && \
     echo "data.directory.external=/data/gatekeeper" > /opt/gatekeeper-server/config.properties && \
     echo "project.name=gatekeeper" >> /opt/gatekeeper-server/gradle.properties && \
-    /opt/gradle-6.0.1/bin/gradle -p /opt/gatekeeper-server war && \
+    echo "org.gradle.jvmargs=-Xmx1536m -Xms512m -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap" >> /opt/gatekeeper-server/gradle.properties && \
+    /opt/gradle-6.0.1/bin/gradle --debug -p /opt/gatekeeper-server war && \
     mkdir -p /usr/local/tomcat/webapps && \
     rm -rf /usr/local/tomcat/webapps/ROOT && \
     cp /opt/gatekeeper-server/build/libs/gatekeeper-4.0.0.war /usr/local/tomcat/webapps/ROOT.war
+
+RUN rm -rf /opt/gatekeeper-server/ && \
+    rm -rf /opt/gatekeeper-client/ && \
+    apt-get purge -y nodejs git && \
+    apt-get autoremove -y
 
 WORKDIR /

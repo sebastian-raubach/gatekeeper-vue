@@ -33,4 +33,9 @@ RUN wget https://services.gradle.org/distributions/gradle-6.0.1-bin.zip -P /tmp/
     rm -rf /usr/local/tomcat/webapps/ROOT && \
     cp /opt/gatekeeper-server/build/libs/gatekeeper-4.0.0.war /usr/local/tomcat/webapps/ROOT.war
 
+RUN rm -rf /opt/gatekeeper-server/ && \
+    rm -rf /opt/gatekeeper-client/ && \
+    apt-get purge -y nodejs git && \
+    apt-get autoremove -y
+
 WORKDIR /

@@ -8,7 +8,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git@github.com:germinateplatform/gatekeeper-vue.git"
+    "url": "https://github.com/germinateplatform/gatekeeper-vue.git"
   },
   "scripts": {
     "serve": "vue-cli-service serve",
