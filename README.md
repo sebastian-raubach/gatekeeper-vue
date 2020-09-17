@@ -12,6 +12,9 @@ Gatekeeper is <a href="https://github.com/germinateplatform/germinate-vue">Germi
 
 Germinate authenticates against Gatekeeper on user login.
 
+## Download
+Please consult the [online documentation](https://germinateplatform.github.io/gatekeeper-server) for a variety of options to download and run Gatekeeper yourself.
+
 
 
 <img src="https://raw.githubusercontent.com/germinateplatform/gatekeeper-vue/master/public/jhi.svg?sanitize=true" height="150" alt="The James Hutton Institute logo">
