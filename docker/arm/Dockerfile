@@ -25,7 +25,7 @@ RUN rm -f .env && \
     cp -a /opt/gatekeeper-client/dist/. /opt/gatekeeper-server/client/
 
 # Download Gradle and build the server code
-RUN apk add --no-cache openjdk8 && \
+RUN apk add --no-cache openjdk11 && \
     wget https://services.gradle.org/distributions/gradle-6.0.1-bin.zip -P /tmp/ && \
     unzip /tmp/gradle-6.0.1-bin.zip -d /opt/ && \
     echo "data.directory.external=/data/gatekeeper" > /opt/gatekeeper-server/config.properties && \
