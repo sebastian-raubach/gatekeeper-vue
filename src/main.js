@@ -42,7 +42,7 @@ Vue.filter('toDate', function (value) {
 })
 
 // Set base URL
-var baseUrl = 'http://localhost:8080/gatekeeper/v4.0.0/api/'
+var baseUrl = './api/'
 
 if (process.env.VUE_APP_BASE_URL) {
   baseUrl = process.env.VUE_APP_BASE_URL
