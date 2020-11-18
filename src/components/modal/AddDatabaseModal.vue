@@ -6,14 +6,22 @@
            :cancel-title="$t('actionCancel')"
            @ok="onAddDatabaseClicked" >
       <b-form @submit.prevent="onAddDatabaseClicked" autocomplete="off" ref="form" :class="validated ? 'was-validated' : 'needs-validation'" >
-        <b-form-group>
-          <label for="systemName">{{ $t('formLabelDatabase') }}</label>
+        <b-form-group
+          :label="$t('formLabelDatabase')"
+          label-for="systemName">
+          <template v-slot:description>
+            <span class="text-muted" v-html="$t('formDescriptionDatabase')" />
+          </template>
           <b-input-group>
             <b-form-input id="systemName" name="systemName" autocomplete="off" v-model="database.systemName" required />
           </b-input-group>
         </b-form-group>
-        <b-form-group>
-          <label for="serverName">{{ $t('formLabelServer') }}</label>
+        <b-form-group
+          :label="$t('formLabelServer')"
+          label-for="serverName">
+          <template v-slot:description>
+            <span class="text-muted" v-html="$t('formDescriptionServer')" />
+          </template>
           <b-input-group>
             <b-form-input id="serverName" name="serverName" autocomplete="off" v-model="database.serverName" required />
           </b-input-group>

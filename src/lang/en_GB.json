@@ -31,6 +31,8 @@
   "formLabelInstitutionName": "Name",
   "formLabelInstitutionAcronym": "Acronym",
   "formLabelInstitutionAddress": "Address",
+  "formDescriptionServer": "The URL of the database server as used in <code>database.server</code> of Germinate",
+  "formDescriptionDatabase": "The name of the database as used in <code>database.name</code> of Germinate",
   "genericNo": "No",
   "genericOk": "OK",
   "genericYes": "Yes",
